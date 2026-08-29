@@ -1,13 +1,18 @@
+import { cancel, isCancel, multiselect } from '@clack/prompts';
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import {
-  AGENTS_SNIPPET,
-  ensureIgnored,
+  AGENTS_POINTER,
+  ensureAgentsPointer,
   generatedWorkflow,
   isGeneratedWorkflow,
+  readSetupConfig,
+  SETUP_COMPONENTS,
+  type SetupComponent,
   writeAtomically,
+  writeSetupConfig,
 } from './project';
 import {
   AGENTFLOW_SKILLS,
@@ -16,7 +21,11 @@ import {
   SKILLS_SOURCE,
 } from './skills';
 
-export { AGENTS_SNIPPET, GENERATED_MARKER } from './project';
+export {
+  AGENTS_POINTER,
+  GENERATED_MARKER,
+  type SetupComponent,
+} from './project';
 export { AGENTFLOW_SKILLS } from './skills';
 
 interface Writer {
@@ -27,6 +36,7 @@ interface CliDependencies {
   cwd?: string;
   stdout?: Writer;
   stderr?: Writer;
+  promptSetup?: () => Promise<SetupComponent[] | null>;
   runSkills?: RunSkills;
   workflow?: string;
 }
@@ -97,23 +107,44 @@ Usage:
   agentflow --version
 
 Commands:
-  init      Install all AgentFlow skills and write AGENTFLOW.md
-  update    Update installed AgentFlow skills and refresh AGENTFLOW.md
+  init      Choose and install AgentFlow components
+  update    Update AgentFlow, installing it first when needed
 
-AgentFlow prints the AGENTS.md snippet for you to add manually.
+The skills CLI handles skill, agent, scope, and installation choices.
 `;
 }
 
-export function runCli(
+async function promptSetup(): Promise<SetupComponent[] | null> {
+  const selected = await multiselect<SetupComponent>({
+    message: 'What do you want to install?',
+    options: [
+      { value: 'skills', label: 'AgentFlow skills' },
+      { value: 'workflow', label: 'AGENTFLOW.md' },
+      { value: 'agents', label: 'AGENTS.md pointer' },
+    ],
+    initialValues: [...SETUP_COMPONENTS],
+    required: true,
+  });
+
+  if (isCancel(selected)) {
+    cancel('AgentFlow setup cancelled.');
+    return null;
+  }
+
+  return selected;
+}
+
+export async function runCli(
   args: string[],
   {
     cwd = process.cwd(),
     stdout = process.stdout,
     stderr = process.stderr,
+    promptSetup: selectSetup = promptSetup,
     runSkills: executeSkills = runSkills,
-    workflow = readFileSync(resolve(packageRoot, 'README.md'), 'utf8'),
+    workflow = readFileSync(resolve(packageRoot, 'AGENTFLOW.md'), 'utf8'),
   }: CliDependencies = {},
-): number {
+): Promise<number> {
   const [command, ...optionArgs] = args;
 
   if (!command || command === '--help' || command === '-h') {
@@ -134,35 +165,66 @@ export function runCli(
   try {
     const forwarded = parseOptions(optionArgs, command);
     const workflowPath = resolve(cwd, 'AGENTFLOW.md');
+    const config = readSetupConfig(cwd);
+    const legacyInstall = !config && isGeneratedWorkflow(workflowPath);
+    const installing = command === 'init' || (!config && !legacyInstall);
+    const assumeDefaults =
+      forwarded.includes('--yes') || forwarded.includes('-y');
+    const components = installing
+      ? assumeDefaults
+        ? [...SETUP_COMPONENTS]
+        : await selectSetup()
+      : (config?.components ?? ['skills', 'workflow']);
 
-    if (existsSync(workflowPath) && !isGeneratedWorkflow(workflowPath)) {
+    if (!components) {
+      return 0;
+    }
+
+    if (
+      components.includes('workflow') &&
+      existsSync(workflowPath) &&
+      !isGeneratedWorkflow(workflowPath)
+    ) {
       throw new Error(
         'AGENTFLOW.md is not managed by AgentFlow CLI. Move it or merge it manually before continuing.',
       );
     }
 
-    if (command === 'update' && !existsSync(workflowPath)) {
-      throw new Error('AgentFlow is not initialized here. Run `agentflow init`.');
-    }
-
-    const skillsArgs =
-      command === 'init'
-        ? ['add', SKILLS_SOURCE, '--skill', '*', ...forwarded]
-        : ['update', ...AGENTFLOW_SKILLS, ...forwarded];
-    const status = executeSkills(skillsArgs);
-
-    if (status !== 0) {
-      stderr.write(`Agent skills ${command} failed with exit code ${status}.\n`);
-      return status;
-    }
-
-    writeAtomically(workflowPath, generatedWorkflow(workflow));
-    ensureIgnored(cwd);
-
-    if (command === 'init') {
-      stdout.write(
-        `AgentFlow initialized.\n\nAdd this line to AGENTS.md:\n\n${AGENTS_SNIPPET}\n`,
+    if (components.includes('skills')) {
+      const installOptions = forwarded.filter(
+        (option) => option !== '--project' && option !== '-p',
       );
+      const skillsArgs = installing
+        ? [
+            'add',
+            SKILLS_SOURCE,
+            ...(assumeDefaults ? ['--skill', '*'] : []),
+            ...installOptions,
+          ]
+        : ['update', ...AGENTFLOW_SKILLS, ...forwarded];
+      const status = executeSkills(skillsArgs);
+
+      if (status !== 0) {
+        const operation = installing ? 'install' : 'update';
+        stderr.write(
+          `Agent skills ${operation} failed with exit code ${status}.\n`,
+        );
+        return status;
+      }
+    }
+
+    if (components.includes('workflow')) {
+      writeAtomically(workflowPath, generatedWorkflow(workflow));
+    }
+
+    if (components.includes('agents')) {
+      ensureAgentsPointer(cwd);
+    }
+
+    writeSetupConfig(cwd, components);
+
+    if (installing) {
+      stdout.write('AgentFlow initialized.\n');
     } else {
       stdout.write('AgentFlow updated.\n');
     }

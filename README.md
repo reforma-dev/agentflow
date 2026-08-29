@@ -58,7 +58,12 @@ Research helps when the agent does not know the area, and most larger tasks also
 
 Repeat steps 4–7 until every PR in the plan is complete.
 
-### Step 1. 🔍 Learn how it works (optional)
+AgentFlow keeps research, plans, handoffs, and local setup state under
+`.agentflow/`. Version control is your choice: ignore the directory for a
+private workflow, or commit it to share the work with your team like an
+OpenSpec workspace.
+
+### 🔍 Step 1. Learn how it works (optional)
 
 Research does not require a skill. Even a simple prompt like "Find out how
 authentication works in this project" can make the implementation much easier.
@@ -73,7 +78,7 @@ context compaction or in a new chat.
 
 Even if you skip this step, Grill will fill in any gaps.
 
-### Step 2. 🔥 Sharpen the idea with Grill
+### 🔥 Step 2. Sharpen the idea with Grill
 
 Grill is the core of AgentFlow and the one step used for the most tasks.
 
@@ -84,10 +89,9 @@ decision points, and recommends an answer for each one. You confirm or correct
 that understanding. If your answers open new questions, the agent continues
 until nothing important is left unclear.
 
-This gives the implementation an agreed starting point instead of leaving the
-agent to fill in gaps on its own.
+Now the agent does not have to fill in the gaps while coding.
 
-### Step 3. 🗂️ Plan and slice the work into PRs
+### 🗂️ Step 3. Plan and slice the work into PRs
 
 For a larger task, planning usually follows Grill in the same chat. If you asked
 Grill to plan next, it loads `/plan` automatically. You can also run `/plan`
@@ -98,14 +102,14 @@ Native Plan mode, the agent uses its built-in planning flow and native plan
 artifact instead.
 
 The plan breaks the feature into PRs that can be shipped one by one. A PR is the
-smallest complete change with one coherent outcome and a clear way to verify it,
-not a fixed number of files or lines.
+smallest complete change that does one useful thing and has a clear way to check
+it, not a fixed number of files or lines.
 
-Larger work is usually sliced from foundations to consumers. A full-stack
-feature might start with behavior-preserving refactoring, continue with shared
-types and backend work, and finish with the frontend. A frontend feature might
-move from reusable components, through shared runtime or wiring, to the
-user-facing interface.
+Larger work usually starts with lower-level pieces and moves to the code that
+uses them. A full-stack feature might start with behavior-preserving
+refactoring, continue with shared types and backend work, and finish with the
+frontend. A frontend feature might move from reusable components, through
+shared runtime or wiring, to the user-facing interface.
 
 These are examples, not a required template. A small feature stays as one
 vertical slice. Feature-local components and wiring stay with the interface
@@ -113,7 +117,7 @@ that first uses them instead of becoming placeholder PRs.
 
 Keep the plan updated as the work changes.
 
-### Step 4. 🛠️ Implement one PR
+### 🛠️ Step 4. Implement one PR
 
 Implement the first unchecked PR and nothing beyond it. Without a plan, keep the
 change small enough to review. You can stay in the current chat, start a fresh
@@ -123,20 +127,20 @@ to another chat. Use `/tdd` for test-first work.
 Load any relevant skills named in `AGENTS.md`. If work spills into a later PR,
 update the plan instead of silently expanding the current one.
 
-Before review, update `plan.md`: check the completed PR only after its
-done-when and verification pass, then apply any scope changes to later rows.
+Before review, update `plan.md`: check the completed PR only after its checks
+pass, then apply any scope changes to later rows.
 
-### Step 5. 🤖 Agent review
+### 🤖 Step 5. Agent review
 
 Run `/code-review` on the completed PR. It looks for code to reuse, unnecessary
 wrappers, and avoidable complexity. It fixes small local problems and returns a
 verdict: keep, shrink, or burn.
 
-### Step 6. ✅ Your review, then commit
+### ✅ Step 6. Your review, then commit
 
 Read the diff yourself, then commit it using the project's normal workflow.
 
-### Step 7. 🔄 Refresh the context when needed
+### 🔄 Step 7. Refresh the context when needed
 
 Keep the current chat if it still has useful context. When it gets noisy,
 summarize it or start a fresh one. Run `/handoff` to save what shipped, what
@@ -152,9 +156,22 @@ Install the complete workflow in a project:
 npx @reforma/agentflow init
 ```
 
-The command installs every AgentFlow skill, writes `AGENTFLOW.md`, and ignores
-the local `.agentflow/` artifacts. It prints a short pointer you can add to
-`AGENTS.md` when you want agents in that project to follow the full loop.
+AgentFlow first asks which parts to install: the skills, the concise
+`AGENTFLOW.md` loop, and a one-line pointer in `AGENTS.md`. When you choose the
+skills, the `skills` CLI handles the skill picker, target agents, project or
+global scope, and installation method.
+
+Use its standard AgentFlow flags when the destination is already known:
+
+```bash
+npx @reforma/agentflow init --global --agent cursor
+```
+
+For automation, accept every default without prompts:
+
+```bash
+npx @reforma/agentflow init --yes
+```
 
 Install only one skill without the workflow:
 
@@ -168,6 +185,10 @@ Update the complete workflow:
 npx @reforma/agentflow@latest update
 ```
 
+Updates are non-interactive after setup and refresh only the AgentFlow parts
+selected during initialization. In a project without AgentFlow, `update`
+starts the same setup as `init`.
+
 Or update one independently installed skill:
 
 ```bash
@@ -176,24 +197,7 @@ npx skills update plan
 
 ---
 
-## 💡 Why AgentFlow?
-
-Coding agents can handle large changes, but chat history is a poor place to
-keep requirements, scope, and decisions. AgentFlow moves that information into
-small files and gives each PR a clear boundary.
-
-- **Learn the ground before estimating the work** — the agent sees the existing
-  behavior and code before discussing a solution.
-- **Resolve decisions before coding** — `/grill` exposes assumptions while they
-  are still cheap to change.
-- **Keep changes reviewable** — the plan divides a large feature into PR-sized
-  slices that are implemented and reviewed in order.
-- **Preserve context between sessions** — the review artifacts, plan and handoff tell the next agent what is true and what comes next.
-- **Use an opinionated workflow without heavy artifacts** — the sequence is
-  fixed, while the documentation is limited to one plan and one current
-  handoff.
-
-### ⚖️ How we compare
+## ⚖️ How we compare
 
 OpenSpec and Spec Kit try to cover most of spec-driven development with their
 own commands, templates, and artifacts. AgentFlow does not try to be an
@@ -212,9 +216,9 @@ task lists. AgentFlow gives you an order of work without asking you to move the
 rest of your development process into the framework.
 
 **vs. an unstructured chat** — Working directly in chat is enough for a small
-fix. On larger changes, AgentFlow keeps decisions out of transient history,
-limits scope to one reviewable slice, and gives the next session a reliable
-starting point.
+fix. On larger changes, AgentFlow keeps decisions out of chat history, limits
+scope to one reviewable slice, and gives the next session enough context to
+continue.
 
 ## 🚀 Releasing
 

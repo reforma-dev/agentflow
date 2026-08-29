@@ -5,6 +5,7 @@
     "": {
       "name": "@reforma/agentflow",
       "dependencies": {
+        "@clack/prompts": "1.7.0",
         "skills": "1.5.23",
       },
       "devDependencies": {

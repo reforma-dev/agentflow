@@ -10,12 +10,13 @@
   "files": [
     "bin",
     "skills",
+    "AGENTFLOW.md",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
     "prepare": "node -e \"if (process.env.CI === 'true' || process.env.SKIP_GIT_HOOKS === '1') process.exit(0); require('child_process').execSync('bunx simple-git-hooks', {stdio:'inherit'})\"",
-    "build": "bun build src/bin.ts --target=node --outfile=bin/agentflow.js --external skills",
+    "build": "bun build src/bin.ts --target=node --outfile=bin/agentflow.js --external skills --external @clack/prompts",
     "typecheck": "tsc --noEmit",
     "changeset": "bunx @changesets/cli",
     "version-packages": "bunx @changesets/cli version",
@@ -48,6 +49,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@clack/prompts": "1.7.0",
     "skills": "1.5.23"
   },
   "devDependencies": {
