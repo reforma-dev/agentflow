@@ -1,5 +1,5 @@
 import { cancel, isCancel, outro, select } from '@clack/prompts';
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { styleText } from 'node:util';
@@ -218,16 +218,6 @@ export async function runCli(
         : ['skills'];
     } else {
       components = config?.components ?? ['skills', 'workflow'];
-    }
-
-    if (
-      components.includes('workflow') &&
-      existsSync(workflowPath) &&
-      !isGeneratedWorkflow(workflowPath)
-    ) {
-      throw new Error(
-        'AGENTFLOW.md is not managed by AgentFlow CLI. Move it or merge it manually before continuing.',
-      );
     }
 
     if (!installing && components.includes('skills')) {

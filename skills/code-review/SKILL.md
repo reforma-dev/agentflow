@@ -9,7 +9,7 @@ license: MIT
 
 # Code review
 
-Reviewers collect; **you apply fixes** — including obvious local defects, without asking. Done when production code is **smaller and less wrapped**, calling what already exists. Verdict: `keep` / `shrink` / `burn`.
+Reviewers collect; **you apply fixes** — including obvious local defects, without asking. Done when **no unnecessary production structure remains**, calling what already exists. Verdict: `keep` / `shrink` / `burn`.
 
 Bugs are incidental: whoever already read the files reports ones they saw. Do not launch a bot to hunt bugs.
 
@@ -92,7 +92,7 @@ Bar (even if a bot under-reported):
 
 1. **Reuse** — existing helper/component/API does the job → call it. No parallel wrapper. Duplicate implementations in the allowlist → keep the better one, retarget imports, delete the rest.
 2. **Wrappers** — pass-throughs, extra HTML/JSX, one-off barrels/helpers: inline or delete. Do not wrap a wrapper.
-3. **Shrink** — net-fewer prod lines (tests excluded) by deleting wrappers, dupes, and orphans — not by packing lines. Nested ternaries, dense one-liners, and mashed concerns are not shrink. Clarity wins when they conflict. Preserve behavior: only how, not what. A new file/helper is wrong unless it deletes more than it adds. If prod cannot shrink, say why.
+3. **Shrink** — no unnecessary production structure remains. Delete wrappers, dupes, and orphans — not by packing lines. Nested ternaries, dense one-liners, and mashed concerns are not shrink. Clarity wins when they conflict. Preserve behavior: only how, not what. Net-fewer prod lines (tests excluded) is a strong signal leftover structure remains, not required proof. A named abstraction that earns its place is keep. A new file/helper is wrong unless it removes more structure than it adds.
 4. **Orphans** — unused imports, locals, helpers, exports, files, or commented-out blocks **this allowlisted change** made dead. Before delete: Grep real uses, including dynamic `import()` / string path lookups. Zero uses → delete. Package public export / cross-app API without monorepo Grep proof → defer. Pre-existing dead outside the allowlist → leave. Unsure → defer (no knip/depcheck/ts-prune sweeps).
 5. **Verdict** — local `burn`/`shrink` (inline, delete the new file, call the existing API) → do it. Whole-shape `burn` → say so and defer; do not nibble.
 6. **Tests in the allowlist** — keep real behavior tests; delete mock-theater / dupes / empty / greenwash. Do not invent tests for a prod-only change. Do not reshape prod to please a weak test.
@@ -114,4 +114,4 @@ Bug you fixed with no covering test → add a regression test or list `no test: 
 
 ## Output
 
-Launch line; **verdict** (`keep` / `shrink` / `burn` + one line); what changed; prod smaller or why not; wrappers gone / APIs reused; orphans deleted or deferred (Grep gap / public API); incidental bugs fixed or deferred; tests judged or `no tests in allowlist`; spec gaps or `no spec`; deferred (`severity | file:line | reason`); tests/lint **this turn** (command + exit). No “fix or skip?” for local findings.
+Launch line; **verdict** (`keep` / `shrink` / `burn` + one line); what changed; no unnecessary prod structure remains; wrappers gone / APIs reused; orphans deleted or deferred (Grep gap / public API); incidental bugs fixed or deferred; tests judged or `no tests in allowlist`; spec gaps or `no spec`; deferred (`severity | file:line | reason`); tests/lint **this turn** (command + exit). No “fix or skip?” for local findings.

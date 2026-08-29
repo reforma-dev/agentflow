@@ -50,7 +50,7 @@ plan exists), and later rows match what remains.
 
 Load `/code-review` on the completed slice and apply local shrinks.
 
-**Done when:** the review has run and required shrinks are in the diff.
+**Done when:** the review has run and no unnecessary production structure remains.
 
 ## 6. Commit
 

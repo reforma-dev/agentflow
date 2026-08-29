@@ -10,8 +10,8 @@
 
 ```text
 Research → Grill → Plan → PR → Review → Commit
-                          ↑                  │
-                          └──── Next PR ─────┘
+                          ↑                │
+                          └──── Repeat ────┘
 ```
 
 ```bash
@@ -20,45 +20,28 @@ npx @reforma/agentflow init
 
 # AgentFlow
 
-An opinionated workflow for shipping production-ready changes with coding
-agents — research when needed, grill decisions, plan PR-sized slices, then
-implement, review, and commit one at a time. It came out of half a year of
-shipping with agents, trying different approaches, and keeping what still
-worked on real PRs.
+An opinionated workflow for shipping production-ready changes with coding agents. Research when needed, grill decisions, plan PR-sized slices, then implement and review each slice one by one.
 
 ### Why
 
-A single open-ended prompt is enough for a tiny change. On medium and large
-work it is not: scope expands during implementation, earlier decisions sink
-into the chat history, and gaps get filled by the model — often incorrectly.
-Summarize the thread or move to a new chat and the reasoning behind those
-choices is gone.
+A single open-ended prompt works for a tiny change. On larger work, scope expands, decisions disappear into chat history, and the model fills the gaps with guesses — skipping edge cases, weakening validation, or choosing the wrong abstraction. Start a new chat, and all the reasoning is gone.
 
-Spec-driven frameworks (OpenSpec, Spec Kit, and similar) address that by
-moving intent into documents — proposals, requirements, designs, task trees —
-and driving the agent from that tree. The idea is sound. The cost often is
-not: a process to learn, many commands and commitments before code starts,
-poor fit for small fixes, and enough friction that people fall back to an
-unstructured chat when the ceremony outweighs the task.
+Spec-driven frameworks such as OpenSpec and Spec Kit address this by moving intent into documents — proposals, requirements, designs, and task trees — then driving the agent from them. The idea is sound, but the cost is real: commands to learn, many artifacts before code starts, poor fit for small fixes, and enough friction to push people back to unstructured chat when the ceremony outweighs the task.
 
-AgentFlow is what we kept after half a year of shipping with agents:
+AgentFlow is what survived half a year of shipping real PRs with agents:
 
-- **Specs ≠ shipped code.** Most teams live in git and PRs. This is a workflow
-  for that world — not a lighter OpenSpec.
-- **Ceremony is a tax.** Every extra folder is a place the agent and the human
-  can drift apart. Fewer artifacts means less drift, not less discipline.
-- **Discipline is elsewhere.** `/grill` settles decisions; `/plan` slices
-  reviewable PRs; review and handoff keep the loop honest. Same path from a
-  one-line fix to an epic — skip the steps you do not need.
+- **Specs ≠ shipped code.** Research and plans are working artifacts first. Commit them and keep using them as specs, leave them local, or delete them after the PR — AgentFlow does not prescribe their lifetime. Git and PRs remain the center of the workflow.
+- **Ceremony is a tax.** A spec-driven process every developer must learn, remember, and follow will eventually be bypassed. Its artifacts then go stale and start misleading future agents. With AgentFlow, you only need to start by clarifying the task. The agent knows when to research, make a plan, review the change, or prepare a handoff.
+- **Discipline lives in the loop.** Decisions are settled before implementation, work is limited to one PR-sized slice, and that slice is reviewed before the next begins. You can skip steps that do not help, but the order stays the same.
 
-| Skill          | What it does                                             |
-| -------------- | -------------------------------------------------------- |
-| `/research`    | Save technology or landscape research for later chats    |
-| `/grill`       | Question an idea until the important decisions are clear |
-| `/plan`        | Split the work into PR-sized slices                      |
-| `/code-review` | Review each slice for reuse and unnecessary complexity   |
-| `/handoff`     | Save context before moving to a fresh chat               |
-| `/tdd`         | Work through one red-green slice at a time               |
+| Skill          | What it does                                                               |
+| -------------- | -------------------------------------------------------------------------- |
+| `/research`    | Save code or technology research for the context of current or later chats |
+| `/grill`       | Question an idea until the important decisions are clear                   |
+| `/plan`        | Split the work into PR-sized slices                                        |
+| `/code-review` | Review the written code for reuse and leftover structure                   |
+| `/handoff`     | Pass context when you want to continue the work in another chat            |
+| `/tdd`         | Implement one PR at a time using test-driven development                   |
 
 ---
 
@@ -190,6 +173,8 @@ npx @reforma/agentflow@latest update
 Updates are non-interactive after setup and refresh only the parts selected
 during initialization. Without AgentFlow, `update` starts the same setup as
 `init`.
+
+Do not edit `AGENTFLOW.md`. `init` and `update` will replace it.
 
 <details>
 <summary>More install options</summary>

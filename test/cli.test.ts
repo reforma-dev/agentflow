@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test';
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -109,29 +109,61 @@ test('init is idempotent and forwards install options', async () => {
   }
 });
 
-test('init installs skills before rejecting a user-owned AGENTFLOW.md', async () => {
+test('init replaces an existing AGENTFLOW.md', async () => {
   const context = project();
   writeFileSync(join(context.cwd, 'AGENTFLOW.md'), '# My workflow\n');
 
   try {
-    const status = await runCli(['init'], {
+    const status = await runCli(['init', '--yes'], {
       ...context,
       workflow: '# AgentFlow\n',
-      promptDocs: async () => true,
+      promptDocs: () => {
+        throw new Error('prompt should not run');
+      },
       runSkills: (args) => {
         context.calls.push(args);
         return 0;
       },
     });
 
-    expect(status).toBe(1);
+    expect(status).toBe(0);
     expect(context.calls).toEqual([
-      ['add', 'reforma-dev/agentflow', '--skill', '*'],
+      ['add', 'reforma-dev/agentflow', '--skill', '*', '--yes'],
     ]);
     expect(readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8')).toBe(
-      '# My workflow\n',
+      `${GENERATED_MARKER}\n\n# AgentFlow\n`,
     );
-    expect(context.output().stderr).toContain('not managed by AgentFlow CLI');
+    expect(context.output().stderr).toBe('');
+  } finally {
+    context.cleanup();
+  }
+});
+
+test('update replaces a user-owned AGENTFLOW.md when docs are configured', async () => {
+  const context = project();
+  mkdirSync(join(context.cwd, '.agentflow'));
+  writeFileSync(
+    join(context.cwd, '.agentflow/config.json'),
+    `${JSON.stringify({ version: 1, components: ['skills', 'workflow'] }, null, 2)}\n`,
+  );
+  writeFileSync(join(context.cwd, 'AGENTFLOW.md'), '# Mine\n');
+
+  try {
+    const status = await runCli(['update', '--yes'], {
+      ...context,
+      workflow: '# AgentFlow\n',
+      runSkills: (args) => {
+        context.calls.push(args);
+        return 0;
+      },
+    });
+
+    expect(status).toBe(0);
+    expect(context.calls).toEqual([['update', ...AGENTFLOW_SKILLS, '--yes']]);
+    expect(readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8')).toBe(
+      `${GENERATED_MARKER}\n\n# AgentFlow\n`,
+    );
+    expect(context.output().stderr).toBe('');
   } finally {
     context.cleanup();
   }

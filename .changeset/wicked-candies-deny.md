@@ -1,0 +1,5 @@
+---
+"@reforma/agentflow": patch
+---
+
+Bugfixes
