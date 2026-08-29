@@ -1,5 +1,12 @@
 # @reforma/agentflow
 
+## 1.1.2
+
+### Patch Changes
+
+- 33bf112: Replace AGENTFLOW.md on init and update instead of failing when a copy already exists.
+- 33bf112: Bugfixes
+
 ## 1.1.1
 
 ### Patch Changes
