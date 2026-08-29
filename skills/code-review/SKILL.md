@@ -1,13 +1,13 @@
 ---
 name: code-review
 description: >-
-  Strict review of reuse, wrappers, and architecture. Reviewers collect, then
-  you apply fixes. Verdict is keep, shrink, or burn.
+  Use when a PR-sized slice is complete and needs review before commit, or when
+  the diff may reinvent APIs, add wrappers, or grow without shrinking. Not for
+  open-ended bug hunts.
 license: MIT
-disable-model-invocation: true
 ---
 
-# code-review
+# Code review
 
 Reviewers collect; **you apply fixes** — including obvious local defects, without asking. Done when production code is **smaller and less wrapped**, calling what already exists. Verdict: `keep` / `shrink` / `burn`.
 

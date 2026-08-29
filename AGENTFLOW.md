@@ -1,6 +1,7 @@
 # AgentFlow
 
-Use this loop for changes larger than an obvious quick fix:
+Ordered loop for work larger than a quick fix. Skills own their steps; this file
+only sequences them and names artifact paths.
 
 ```text
 Research → Grill → Plan → PR → Review → Commit
@@ -8,78 +9,61 @@ Research → Grill → Plan → PR → Review → Commit
                           └──── Next PR ─────┘
 ```
 
-Research is optional. Small tasks can skip the plan. Write a handoff only when
-the work moves to a fresh context.
+Skip Research when the area is already clear. Skip Plan when one small slice is
+enough. Run Handoff only when unfinished work moves to a fresh context.
 
-## 1. Learn how it works
+## 1. Research (optional)
 
-Explore the existing feature, code, or technology before proposing a change.
-Use `/research` when the findings must survive the current chat. Save reusable
-findings under `.agentflow/<feature>/research/`.
+Explore the area before proposing the change. Load `/research` when findings
+must survive this chat.
 
-Skip this step when the area and required change are already clear.
+**Done when:** the agent can name what it will change, or the step was skipped
+because that is already known.
 
-## 2. Sharpen the task
+Artifacts: `.agentflow/<feature>/research/`.
 
-Run `/grill`. List assumptions, unresolved decisions, what is in and out of the
-task, and how the result will be checked.
+## 2. Grill
 
-Continue until no open decision can change how the work will be done. Then
-proceed directly for a small task or load `/plan` for larger work.
+Load `/grill`. Settle assumptions, scope, and how the result will be checked.
 
-## 3. Plan PR-sized slices
+**Done when:** the user confirmed the final reading and no open decision can
+change how the work will be done.
 
-Save the plan to `.agentflow/<feature>/plan.md`.
+## 3. Plan (larger work)
 
-Each row is the smallest complete, independently shippable change that does one
-useful thing and has one clear way to test it. Put lower-level pieces before the
-code that uses them.
+Load `/plan` when the confirmed work needs more than one shippable slice.
+Small confirmed work continues at step 4 without a plan file.
 
-Common shapes:
-
-- Full-stack feature: behavior-preserving refactoring, then shared types and
-  backend, then frontend integration.
-- Frontend feature: reusable components, then shared runtime or wiring, then
-  user-facing interfaces.
-- Small feature: one complete vertical slice.
-
-Give a foundation its own row when it is independently useful. Keep
-feature-local components and wiring with their first consumer. Split distinct
-outcomes or architectural decisions that can ship separately.
-
-Keep the plan current as implementation changes. Record scope changes and new
-decisions in the plan instead of letting the active PR grow silently.
+**Done when:** `.agentflow/<feature>/plan.md` exists with ordered unchecked PR
+rows, or the plan was skipped for a single small slice.
 
 ## 4. Implement one PR
 
-Implement the first unchecked row and nothing beyond it. Without a plan, keep
-the change small enough to review as one useful result.
+Implement only the first unchecked plan row. Without a plan, keep one reviewable
+slice. Load project craft skills named in `AGENTS.md`. Load `/tdd` for
+test-first work.
 
-Load the relevant project skills. Use `/tdd` when the work should proceed
-test-first.
-
-Verify the slice using the checks named in the plan. Check its row only after
-the implementation and verification are complete, then update later rows to
-match what remains.
+**Done when:** the slice meets its verify checks, its plan row is checked (if a
+plan exists), and later rows match what remains.
 
 ## 5. Review
 
-Run `/code-review` against the completed slice. Fix local findings and reduce
-the change when the review verdict requires it.
+Load `/code-review` on the completed slice and apply local shrinks.
 
-Read the final diff yourself after the agent review.
+**Done when:** the review has run and required shrinks are in the diff.
 
 ## 6. Commit
 
-Commit the verified slice using the project's normal workflow. Then return to
-the first unchecked row.
+Commit with the project's normal workflow, then return to step 4 for the next
+unchecked row.
 
-## 7. Refresh context when needed
+**Done when:** the slice is committed (or staged per project rules) and the next
+row is identified or the plan is complete.
 
-Continue in the current chat while its context remains useful. When it becomes
-noisy, summarize it or start a fresh chat.
+## 7. Handoff (fresh context)
 
-Run `/handoff` before moving unfinished work to a fresh context. Save the result
-to `.agentflow/<feature>/handoff.md` with what shipped, what changed, and which
-PR comes next. Bring the plan and handoff into the new context, then resume from
-the first unchecked row.
+Load `/handoff` before moving unfinished work to another chat. Attach the plan
+and handoff there, then resume at step 4.
+
+**Done when:** `.agentflow/<feature>/handoff.md` exists, or the current chat
+continues without a context move.

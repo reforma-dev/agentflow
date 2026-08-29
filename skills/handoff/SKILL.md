@@ -1,9 +1,10 @@
 ---
 name: handoff
 description: >-
-  Save AGENTFLOW context to disk before continuing in a fresh chat.
+  Use when an implementation PR is done and unfinished work will continue in a
+  fresh chat, or when context is about to be compacted and the next slice needs
+  a durable baton. Not for mid-grill notes.
 license: MIT
-disable-model-invocation: true
 ---
 
 # Handoff
@@ -12,7 +13,7 @@ Use this after an implementation PR when the next slice will continue in a
 fresh chat. Write a file the next chat can `@`-attach. The handoff + plan are
 the durable source of truth.
 
-Loop: the repo-root loop doc (`README.md` or `AGENTFLOW.md`).
+Loop: repo-root `AGENTFLOW.md`.
 
 ## Steps
 
@@ -61,3 +62,9 @@ none
 done when: <criterion>
 suggested: tdd / code-review / craft skills for the next slice
 ```
+
+## Done
+
+Handoff is complete when `.agentflow/<slug>/handoff.md` exists, the plan matches
+what shipped, Next PR is one row, and the printed path is what the fresh chat
+should attach.

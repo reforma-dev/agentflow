@@ -1,9 +1,9 @@
 ---
 name: plan
 description: >-
-  Use when the user asks to write or update an implementation plan split into
-  PR-sized slices after decisions are settled. Not the interview (grill) and
-  not the end-of-PR baton (handoff).
+  Use when decisions are settled and the work needs ordered PR-sized slices, or
+  when an existing plan must be updated after scope bleed. Not grill. Not
+  handoff.
 license: MIT
 ---
 
@@ -45,9 +45,9 @@ plan.
 - [ ] PR 2 — …
 ```
 
-Each row is the smallest complete, independently shippable change with one
-coherent outcome and one verification story. Order rows from foundations to
-their consumers.
+Each row is the smallest complete, independently shippable change that does one
+useful thing and has one clear way to test it. Put lower-level pieces before the
+code that uses them.
 
 ## Slicing
 

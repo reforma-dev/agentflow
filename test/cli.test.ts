@@ -26,14 +26,14 @@ function project() {
   };
 }
 
-test('init --yes installs every component without prompting', async () => {
+test('init --yes installs skills then docs without prompting', async () => {
   const context = project();
 
   try {
     const status = await runCli(['init', '--yes'], {
       ...context,
       workflow: '# Workflow\n',
-      promptSetup: () => {
+      promptDocs: () => {
         throw new Error('prompt should not run');
       },
       runSkills: (args) => {
@@ -49,9 +49,6 @@ test('init --yes installs every component without prompting', async () => {
     expect(readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8')).toBe(
       `${GENERATED_MARKER}\n\n# Workflow\n`,
     );
-    expect(() =>
-      readFileSync(join(context.cwd, '.gitignore'), 'utf8'),
-    ).toThrow();
     expect(context.output().stdout).toContain('AgentFlow initialized');
     expect(readFileSync(join(context.cwd, 'AGENTS.md'), 'utf8')).toBe(
       `${AGENTS_POINTER}\n`,
@@ -104,9 +101,6 @@ test('init is idempotent and forwards install options', async () => {
         '--yes',
       ],
     ]);
-    expect(readFileSync(join(context.cwd, '.gitignore'), 'utf8')).toBe(
-      'dist/\n',
-    );
     expect(readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8')).toBe(
       `${GENERATED_MARKER}\n\nnew\n`,
     );
@@ -115,7 +109,7 @@ test('init is idempotent and forwards install options', async () => {
   }
 });
 
-test('init protects a user-owned AGENTFLOW.md', async () => {
+test('init installs skills before rejecting a user-owned AGENTFLOW.md', async () => {
   const context = project();
   writeFileSync(join(context.cwd, 'AGENTFLOW.md'), '# My workflow\n');
 
@@ -123,7 +117,7 @@ test('init protects a user-owned AGENTFLOW.md', async () => {
     const status = await runCli(['init'], {
       ...context,
       workflow: '# AgentFlow\n',
-      promptSetup: async () => ['skills', 'workflow', 'agents'],
+      promptDocs: async () => true,
       runSkills: (args) => {
         context.calls.push(args);
         return 0;
@@ -131,7 +125,9 @@ test('init protects a user-owned AGENTFLOW.md', async () => {
     });
 
     expect(status).toBe(1);
-    expect(context.calls).toEqual([]);
+    expect(context.calls).toEqual([
+      ['add', 'reforma-dev/agentflow', '--skill', '*'],
+    ]);
     expect(readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8')).toBe(
       '# My workflow\n',
     );
@@ -165,7 +161,7 @@ test('update refreshes only AgentFlow skills and generated workflow', async () =
     expect(readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8')).toBe(
       `${GENERATED_MARKER}\n\n# Current workflow\n`,
     );
-    expect(context.output().stdout).toBe('AgentFlow updated.\n');
+    expect(context.output().stdout).toContain('AgentFlow updated.');
   } finally {
     context.cleanup();
   }
@@ -197,13 +193,21 @@ test('update installs AgentFlow when the project is not initialized', async () =
   }
 });
 
-test('interactive setup delegates skill and agent choices to skills', async () => {
+test('init always installs all skills before asking about docs', async () => {
   const context = project();
+  let docsPrompted = false;
 
   try {
     const status = await runCli(['init'], {
       ...context,
-      promptSetup: async () => ['skills'],
+      workflow: '# Workflow\n',
+      promptDocs: async () => {
+        docsPrompted = true;
+        expect(context.calls).toEqual([
+          ['add', 'reforma-dev/agentflow', '--skill', '*'],
+        ]);
+        return false;
+      },
       runSkills: (args) => {
         context.calls.push(args);
         return 0;
@@ -211,19 +215,27 @@ test('interactive setup delegates skill and agent choices to skills', async () =
     });
 
     expect(status).toBe(0);
-    expect(context.calls).toEqual([['add', 'reforma-dev/agentflow']]);
+    expect(docsPrompted).toBe(true);
     expect(() =>
       readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8'),
     ).toThrow();
     expect(() =>
       readFileSync(join(context.cwd, 'AGENTS.md'), 'utf8'),
     ).toThrow();
+    expect(
+      JSON.parse(
+        readFileSync(join(context.cwd, '.agentflow/config.json'), 'utf8'),
+      ),
+    ).toEqual({
+      version: 1,
+      components: ['skills'],
+    });
   } finally {
     context.cleanup();
   }
 });
 
-test('setup can install only the workflow and AGENTS.md pointer', async () => {
+test('accepting docs writes AGENTFLOW.md and AGENTS.md after skills', async () => {
   const context = project();
   writeFileSync(join(context.cwd, 'AGENTS.md'), '# Project\n');
 
@@ -231,7 +243,7 @@ test('setup can install only the workflow and AGENTS.md pointer', async () => {
     const status = await runCli(['init'], {
       ...context,
       workflow: '# Workflow\n',
-      promptSetup: async () => ['workflow', 'agents'],
+      promptDocs: async () => true,
       runSkills: (args) => {
         context.calls.push(args);
         return 0;
@@ -239,9 +251,14 @@ test('setup can install only the workflow and AGENTS.md pointer', async () => {
     });
 
     expect(status).toBe(0);
-    expect(context.calls).toEqual([]);
+    expect(context.calls).toEqual([
+      ['add', 'reforma-dev/agentflow', '--skill', '*'],
+    ]);
+    expect(readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8')).toBe(
+      `${GENERATED_MARKER}\n\n# Workflow\n`,
+    );
     expect(readFileSync(join(context.cwd, 'AGENTS.md'), 'utf8')).toBe(
-      `# Project\n${AGENTS_POINTER}\n`,
+      `# Project\n\n${AGENTS_POINTER}\n`,
     );
     expect(
       JSON.parse(
@@ -249,7 +266,7 @@ test('setup can install only the workflow and AGENTS.md pointer', async () => {
       ),
     ).toEqual({
       version: 1,
-      components: ['workflow', 'agents'],
+      components: ['skills', 'workflow', 'agents'],
     });
   } finally {
     context.cleanup();
@@ -266,12 +283,14 @@ test('AGENTS.md pointer is idempotent', async () => {
   try {
     await runCli(['init'], {
       ...context,
-      promptSetup: async () => ['agents'],
+      workflow: '# Workflow\n',
+      promptDocs: async () => true,
       runSkills: () => 0,
     });
     await runCli(['init'], {
       ...context,
-      promptSetup: async () => ['agents'],
+      workflow: '# Workflow\n',
+      promptDocs: async () => true,
       runSkills: () => 0,
     });
 
@@ -283,13 +302,39 @@ test('AGENTS.md pointer is idempotent', async () => {
   }
 });
 
-test('cancelled setup leaves the project untouched', async () => {
+test('AGENTS.md is left alone when @AGENTFLOW.md is already mentioned', async () => {
+  const context = project();
+  const existing =
+    '# Project\n\nSee @AGENTFLOW.md before large changes.\n';
+  writeFileSync(join(context.cwd, 'AGENTS.md'), existing);
+
+  try {
+    const status = await runCli(['init'], {
+      ...context,
+      workflow: '# Workflow\n',
+      promptDocs: async () => true,
+      runSkills: () => 0,
+    });
+
+    expect(status).toBe(0);
+    expect(readFileSync(join(context.cwd, 'AGENTS.md'), 'utf8')).toBe(
+      existing,
+    );
+    expect(readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8')).toBe(
+      `${GENERATED_MARKER}\n\n# Workflow\n`,
+    );
+  } finally {
+    context.cleanup();
+  }
+});
+
+test('cancelled docs prompt keeps installed skills', async () => {
   const context = project();
 
   try {
     const status = await runCli(['init'], {
       ...context,
-      promptSetup: async () => null,
+      promptDocs: async () => null,
       runSkills: (args) => {
         context.calls.push(args);
         return 0;
@@ -297,33 +342,38 @@ test('cancelled setup leaves the project untouched', async () => {
     });
 
     expect(status).toBe(0);
-    expect(context.calls).toEqual([]);
-    expect(() =>
-      readFileSync(join(context.cwd, '.gitignore'), 'utf8'),
-    ).toThrow();
-    expect(() =>
-      readFileSync(join(context.cwd, '.agentflow/config.json'), 'utf8'),
-    ).toThrow();
+    expect(context.calls).toEqual([
+      ['add', 'reforma-dev/agentflow', '--skill', '*'],
+    ]);
+    expect(
+      JSON.parse(
+        readFileSync(join(context.cwd, '.agentflow/config.json'), 'utf8'),
+      ),
+    ).toEqual({
+      version: 1,
+      components: ['skills'],
+    });
+    expect(context.output().stdout).toContain('AgentFlow skills installed');
   } finally {
     context.cleanup();
   }
 });
 
-test('update quietly refreshes only configured components', async () => {
+test('update quietly refreshes configured docs and skills', async () => {
   const context = project();
 
   try {
     await runCli(['init'], {
       ...context,
       workflow: 'old\n',
-      promptSetup: async () => ['workflow'],
+      promptDocs: async () => true,
       runSkills: () => 0,
     });
 
     const status = await runCli(['update'], {
       ...context,
       workflow: 'new\n',
-      promptSetup: () => {
+      promptDocs: () => {
         throw new Error('prompt should not run');
       },
       runSkills: (args) => {
@@ -333,7 +383,7 @@ test('update quietly refreshes only configured components', async () => {
     });
 
     expect(status).toBe(0);
-    expect(context.calls).toEqual([]);
+    expect(context.calls).toEqual([['update', ...AGENTFLOW_SKILLS]]);
     expect(readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8')).toBe(
       `${GENERATED_MARKER}\n\nnew\n`,
     );
@@ -350,7 +400,7 @@ test('a delegated failure leaves project files untouched', async () => {
     const status = await runCli(['init'], {
       ...context,
       workflow: '# Workflow\n',
-      promptSetup: async () => ['skills', 'workflow', 'agents'],
+      promptDocs: async () => true,
       runSkills: () => 9,
     });
 
@@ -359,7 +409,7 @@ test('a delegated failure leaves project files untouched', async () => {
       readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8'),
     ).toThrow();
     expect(() =>
-      readFileSync(join(context.cwd, '.gitignore'), 'utf8'),
+      readFileSync(join(context.cwd, '.agentflow/config.json'), 'utf8'),
     ).toThrow();
     expect(context.output().stderr).toContain('install failed with exit code 9');
   } finally {

@@ -1,9 +1,9 @@
 ---
 name: research
 description: >-
-  Research a codebase, feature, technology, or external landscape and save a
-  reusable map under .agentflow/<feature>/research/. Use when later work should
-  not repeat the same investigation. Not for a one-file lookup.
+  Use when an area, technology, or landscape must be mapped before changing
+  code, or when findings need to survive compaction or a fresh chat. Not for a
+  one-file lookup.
 license: MIT
 ---
 

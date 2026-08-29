@@ -1,8 +1,9 @@
 ---
 name: tdd
 description: >-
-  Use when the user wants to build features or fix bugs test-first,
-  mentions "red-green-refactor", or wants integration tests.
+  Use when building or fixing behavior test-first, when the user mentions
+  red-green-refactor or integration tests, or when implementation would
+  otherwise proceed without a failing test at an agreed seam.
 license: MIT
 ---
 
@@ -41,3 +42,12 @@ Root `AGENTS.md` wins: do not add a file, port, or wrapper so a test can reach i
 - **Watch the color.** Red is not “wrote a test”. Run it. Confirm it fails because the behavior is missing — not a typo, import error, or existing pass. Passes immediately → you tested existing behavior; fix the test. Errors → fix the harness until it fails correctly, then implement. Green: run the same command; claim pass only from that output.
 - **Name the break.** Before the test body, name the production change that should make it fail. Cannot name one → wrong seam.
 - **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.
+
+## Done
+
+One cycle is complete when:
+
+1. Seams under test are confirmed with the user.
+2. The new test was run red for the missing behavior (not a harness error).
+3. The same command was run green after the minimal production change.
+4. No speculative features or bulk test suites were added in that cycle.

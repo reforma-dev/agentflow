@@ -1,15 +1,16 @@
-import { cancel, isCancel, multiselect } from '@clack/prompts';
+import { cancel, isCancel, outro, select } from '@clack/prompts';
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { styleText } from 'node:util';
 
 import {
   AGENTS_POINTER,
+  DOC_COMPONENTS,
   ensureAgentsPointer,
   generatedWorkflow,
   isGeneratedWorkflow,
   readSetupConfig,
-  SETUP_COMPONENTS,
   type SetupComponent,
   writeAtomically,
   writeSetupConfig,
@@ -36,9 +37,15 @@ interface CliDependencies {
   cwd?: string;
   stdout?: Writer;
   stderr?: Writer;
-  promptSetup?: () => Promise<SetupComponent[] | null>;
+  promptDocs?: () => Promise<boolean | null>;
   runSkills?: RunSkills;
   workflow?: string;
+}
+
+function finish(message: string, output: Writer) {
+  outro(styleText('green', message), {
+    output: output as NodeJS.WriteStream,
+  });
 }
 
 interface PackageJson {
@@ -107,23 +114,29 @@ Usage:
   agentflow --version
 
 Commands:
-  init      Choose and install AgentFlow components
+  init      Install AgentFlow skills, then optionally the docs
   update    Update AgentFlow, installing it first when needed
 
-The skills CLI handles skill, agent, scope, and installation choices.
+The skills CLI handles agent, scope, and installation choices.
 `;
 }
 
-async function promptSetup(): Promise<SetupComponent[] | null> {
-  const selected = await multiselect<SetupComponent>({
-    message: 'What do you want to install?',
+async function promptDocs(): Promise<boolean | null> {
+  const selected = await select({
+    message: 'Set up AgentFlow docs?',
     options: [
-      { value: 'skills', label: 'AgentFlow skills' },
-      { value: 'workflow', label: 'AGENTFLOW.md' },
-      { value: 'agents', label: 'AGENTS.md pointer' },
+      {
+        value: true,
+        label: 'Yes',
+        hint: 'AGENTFLOW.md + pointer to it in AGENTS.md',
+      },
+      {
+        value: false,
+        label: 'No',
+        hint: 'skills only',
+      },
     ],
-    initialValues: [...SETUP_COMPONENTS],
-    required: true,
+    initialValue: true,
   });
 
   if (isCancel(selected)) {
@@ -140,7 +153,7 @@ export async function runCli(
     cwd = process.cwd(),
     stdout = process.stdout,
     stderr = process.stderr,
-    promptSetup: selectSetup = promptSetup,
+    promptDocs: selectDocs = promptDocs,
     runSkills: executeSkills = runSkills,
     workflow = readFileSync(resolve(packageRoot, 'AGENTFLOW.md'), 'utf8'),
   }: CliDependencies = {},
@@ -170,14 +183,41 @@ export async function runCli(
     const installing = command === 'init' || (!config && !legacyInstall);
     const assumeDefaults =
       forwarded.includes('--yes') || forwarded.includes('-y');
-    const components = installing
-      ? assumeDefaults
-        ? [...SETUP_COMPONENTS]
-        : await selectSetup()
-      : (config?.components ?? ['skills', 'workflow']);
 
-    if (!components) {
-      return 0;
+    let components: SetupComponent[];
+
+    if (installing) {
+      const installOptions = forwarded.filter(
+        (option) => option !== '--project' && option !== '-p',
+      );
+      const status = executeSkills([
+        'add',
+        SKILLS_SOURCE,
+        '--skill',
+        '*',
+        ...installOptions,
+      ]);
+
+      if (status !== 0) {
+        stderr.write(
+          `Agent skills install failed with exit code ${status}.\n`,
+        );
+        return status;
+      }
+
+      const wantDocs = assumeDefaults ? true : await selectDocs();
+
+      if (wantDocs === null) {
+        writeSetupConfig(cwd, ['skills']);
+        finish('AgentFlow skills installed.', stdout);
+        return 0;
+      }
+
+      components = wantDocs
+        ? ['skills', ...DOC_COMPONENTS]
+        : ['skills'];
+    } else {
+      components = config?.components ?? ['skills', 'workflow'];
     }
 
     if (
@@ -190,24 +230,16 @@ export async function runCli(
       );
     }
 
-    if (components.includes('skills')) {
-      const installOptions = forwarded.filter(
-        (option) => option !== '--project' && option !== '-p',
-      );
-      const skillsArgs = installing
-        ? [
-            'add',
-            SKILLS_SOURCE,
-            ...(assumeDefaults ? ['--skill', '*'] : []),
-            ...installOptions,
-          ]
-        : ['update', ...AGENTFLOW_SKILLS, ...forwarded];
-      const status = executeSkills(skillsArgs);
+    if (!installing && components.includes('skills')) {
+      const status = executeSkills([
+        'update',
+        ...AGENTFLOW_SKILLS,
+        ...forwarded,
+      ]);
 
       if (status !== 0) {
-        const operation = installing ? 'install' : 'update';
         stderr.write(
-          `Agent skills ${operation} failed with exit code ${status}.\n`,
+          `Agent skills update failed with exit code ${status}.\n`,
         );
         return status;
       }
@@ -223,11 +255,10 @@ export async function runCli(
 
     writeSetupConfig(cwd, components);
 
-    if (installing) {
-      stdout.write('AgentFlow initialized.\n');
-    } else {
-      stdout.write('AgentFlow updated.\n');
-    }
+    finish(
+      installing ? 'AgentFlow initialized.' : 'AgentFlow updated.',
+      stdout,
+    );
 
     return 0;
   } catch (error) {

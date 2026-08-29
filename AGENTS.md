@@ -1,6 +1,6 @@
 # AgentFlow
 
-Check @AGENTFLOW.md to follow the development workflow.
+Larger than a quick fix: follow @AGENTFLOW.md.
 
-This repo publishes its reusable skills from `skills/`. Consuming repos install
-or copy them into their own agent skills directory.
+This repo publishes reusable skills from `skills/`. Consuming repos install them
+with the AgentFlow CLI or the `skills` CLI.
