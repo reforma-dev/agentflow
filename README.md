@@ -1,10 +1,11 @@
-<p align="center">
-  <img src="assets/banner.png" alt="AgentFlow — an opinionated workflow for coding agents" width="100%">
+<p align="left">
+  <a href="https://www.npmjs.com/package/@reforma/agentflow"><img src="https://img.shields.io/npm/v/@reforma/agentflow.svg" alt="npm"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/npm/l/@reforma/agentflow.svg" alt="MIT License"></a>
+  <a href="https://www.skills.sh/reforma-dev/agentflow"><img src="https://skills.sh/b/reforma-dev/agentflow" alt="skills.sh"></a>
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@reforma/agentflow"><img src="https://img.shields.io/npm/v/@reforma/agentflow.svg" alt="npm"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/npm/l/@reforma/agentflow.svg" alt="MIT License"></a>
+  <img src="assets/banner.png" alt="AgentFlow — an opinionated workflow for coding agents" width="100%">
 </p>
 
 ```text
@@ -21,20 +22,34 @@ npx @reforma/agentflow init
 
 An opinionated workflow for shipping production-ready changes with coding
 agents — research when needed, grill decisions, plan PR-sized slices, then
-implement, review, and commit one at a time.
+implement, review, and commit one at a time. It came out of half a year of
+shipping with agents, trying different approaches, and keeping what still
+worked on real PRs.
 
-Long chats lose quality: scope creeps, earlier decisions vanish into history,
-and the agent fills gaps with guesses. AgentFlow keeps the loop short and the
-artifacts on disk so the next chat (or a compacted one) can continue without
-re-deriving the plan.
+### Why
 
-Research is optional, small tasks can skip the plan, and a handoff is only
-needed when you move unfinished work to a fresh context.
+A single open-ended prompt is enough for a tiny change. On medium and large
+work it is not: scope expands during implementation, earlier decisions sink
+into the chat history, and gaps get filled by the model — often incorrectly.
+Summarize the thread or move to a new chat and the reasoning behind those
+choices is gone.
 
-> [!TIP]
-> **Start with Grill.** After install, run `/grill` on your idea — almost every
-> task goes through it. Add `/research` when the area is unfamiliar, `/plan`
-> when the work needs more than one PR.
+Spec-driven frameworks (OpenSpec, Spec Kit, and similar) address that by
+moving intent into documents — proposals, requirements, designs, task trees —
+and driving the agent from that tree. The idea is sound. The cost often is
+not: a process to learn, many commands and commitments before code starts,
+poor fit for small fixes, and enough friction that people fall back to an
+unstructured chat when the ceremony outweighs the task.
+
+AgentFlow is what we kept after half a year of shipping with agents:
+
+- **Specs ≠ shipped code.** Most teams live in git and PRs. This is a workflow
+  for that world — not a lighter OpenSpec.
+- **Ceremony is a tax.** Every extra folder is a place the agent and the human
+  can drift apart. Fewer artifacts means less drift, not less discipline.
+- **Discipline is elsewhere.** `/grill` settles decisions; `/plan` slices
+  reviewable PRs; review and handoff keep the loop honest. Same path from a
+  one-line fix to an epic — skip the steps you do not need.
 
 | Skill          | What it does                                             |
 | -------------- | -------------------------------------------------------- |
@@ -61,10 +76,10 @@ Research helps when the agent does not know the area, and most larger tasks also
 
 Repeat steps 4–7 until every PR in the plan is complete.
 
-AgentFlow keeps research, plans, handoffs, and local setup state under
-`.agentflow/`. Version control is your choice: ignore the directory for a
-private workflow, or commit it to share the work with your team like an
-OpenSpec workspace.
+> [!TIP]
+> AgentFlow keeps research, plans, handoffs, and local setup state under `.agentflow/`.
+> Version control is your choice: ignore the directory for a
+> private workflow, or commit it to share the work with your team like an OpenSpec workspace.
 
 ### 🔍 Step 1. Learn how it works (optional)
 
@@ -209,20 +224,18 @@ all-in-one system. It adds a small, opinionated loop to the way you already
 build software.
 
 **vs. [OpenSpec](https://github.com/Fission-AI/OpenSpec)** — OpenSpec manages
-proposals, requirements, designs, tasks, and completed changes. That works when
-specs are the center of the process, but it also means adopting OpenSpec's
-artifact system. AgentFlow does not require a spec tree. Most work needs one
-plan and a handoff only when the context moves to a new chat.
+proposals, requirements, designs, tasks, and completed changes when specs are
+the center of the process. AgentFlow stays on one plan and a handoff only when
+context moves — no spec tree to adopt.
 
-**vs. [Spec Kit](https://github.com/github/spec-kit)** — Spec Kit provides a
-thorough, phase-based process with a constitution, specifications, plans, and
-task lists. AgentFlow gives you an order of work without asking you to move the
-rest of your development process into the framework.
+**vs. [Spec Kit](https://github.com/github/spec-kit)** — Spec Kit is a full
+phase-based process (constitution, specs, plans, tasks). AgentFlow gives an
+order of work without moving the rest of your development process into the
+framework.
 
-**vs. an unstructured chat** — Working directly in chat is enough for a small
-fix. On larger changes, AgentFlow keeps decisions out of chat history, limits
-scope to one reviewable slice, and gives the next session enough context to
-continue.
+**vs. an unstructured chat** — Fine for a small fix. On larger changes,
+AgentFlow keeps decisions out of chat history, limits scope to one reviewable
+slice, and gives the next session enough context to continue.
 
 ## 🚀 Releasing
 
