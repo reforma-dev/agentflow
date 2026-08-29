@@ -1,5 +1,14 @@
 # @reforma/agentflow
 
+## 1.1.1
+
+### Patch Changes
+
+- 9cfa7c2: Install all skills first with `--skill '*'`, then ask about AGENTFLOW.md and the
+  AGENTS.md pointer.
+- 9cfa7c2: Sharpen skill descriptions for model invocation and align handoff and
+  code-review with the AgentFlow loop.
+
 ## 1.1.0
 
 ### Minor Changes
