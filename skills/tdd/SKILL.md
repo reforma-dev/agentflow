@@ -3,6 +3,7 @@ name: tdd
 description: >-
   Use when the user wants to build features or fix bugs test-first,
   mentions "red-green-refactor", or wants integration tests.
+license: MIT
 ---
 
 # Test-Driven Development

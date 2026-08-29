@@ -1,0 +1,115 @@
+{
+  "name": "@reforma/agentflow",
+  "version": "0.0.1",
+  "description": "An opinionated workflow for shipping production-ready changes with coding agents.",
+  "author": "Reforma, Inc. <dev@reforma.ai>",
+  "type": "module",
+  "bin": {
+    "agentflow": "bin/agentflow.js"
+  },
+  "files": [
+    "bin",
+    "skills",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "prepare": "node -e \"if (process.env.CI === 'true' || process.env.SKIP_GIT_HOOKS === '1') process.exit(0); require('child_process').execSync('bunx simple-git-hooks', {stdio:'inherit'})\"",
+    "build": "bun build src/bin.ts --target=node --outfile=bin/agentflow.js --external skills",
+    "typecheck": "tsc --noEmit",
+    "changeset": "bunx @changesets/cli",
+    "version-packages": "bunx @changesets/cli version",
+    "release": "bunx @changesets/cli publish",
+    "test": "bun test",
+    "validate:skills": "gh skill publish --dry-run",
+    "prepublishOnly": "bun run typecheck && bun run test && bun run build"
+  },
+  "simple-git-hooks": {
+    "commit-msg": "bunx --no-install commitlint --edit \"$1\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reforma-dev/agentflow.git"
+  },
+  "homepage": "https://github.com/reforma-dev/agentflow#readme",
+  "bugs": "https://github.com/reforma-dev/agentflow/issues",
+  "keywords": [
+    "agent-skills",
+    "coding-agents",
+    "cursor",
+    "claude-code",
+    "codex"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "skills": "1.5.23"
+  },
+  "devDependencies": {
+    "@changesets/cli": "3.0.1",
+    "@commitlint/cli": "21.2.2",
+    "@commitlint/config-conventional": "21.2.2",
+    "@types/bun": "1.4.0",
+    "@types/node": "26.4.0",
+    "simple-git-hooks": "2.14.0",
+    "typescript": "7.0.2"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "type-enum": [
+        2,
+        "always",
+        [
+          "feat",
+          "fix",
+          "chore",
+          "refactor",
+          "docs",
+          "test",
+          "ci",
+          "perf",
+          "revert"
+        ]
+      ],
+      "type-case": [
+        2,
+        "always",
+        "lower-case"
+      ],
+      "type-empty": [
+        2,
+        "never"
+      ],
+      "subject-empty": [
+        2,
+        "never"
+      ],
+      "subject-min-length": [
+        1,
+        "always",
+        4
+      ],
+      "body-max-line-length": [
+        1,
+        "always",
+        250
+      ],
+      "subject-case": [
+        2,
+        "never",
+        [
+          "pascal-case",
+          "upper-case"
+        ]
+      ]
+    }
+  }
+}

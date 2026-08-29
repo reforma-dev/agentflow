@@ -1,0 +1,109 @@
+name: Publish NPM package
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+concurrency:
+  group: npm-release-main
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    outputs:
+      released: ${{ steps.gate.outputs.run }}
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+
+      - name: Gate
+        id: gate
+        run: |
+          STATUS="$(bunx @changesets/cli status 2>&1 || true)"
+          echo "$STATUS"
+
+          if [[ "$STATUS" == *"Packages to be bumped"* ]]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install dependencies
+        if: ${{ steps.gate.outputs.run == 'true' }}
+        run: bun install --frozen-lockfile
+
+      - name: Test
+        if: ${{ steps.gate.outputs.run == 'true' }}
+        run: bun run test
+
+      - name: Bump version and create changelog
+        id: version
+        if: ${{ steps.gate.outputs.run == 'true' }}
+        run: |
+          bun run version-packages
+          echo "version=$(node -p 'require("./package.json").version')" >> "$GITHUB_OUTPUT"
+
+      - name: Publish to npm with OIDC
+        if: ${{ steps.gate.outputs.run == 'true' }}
+        run: bun run release
+
+      - name: Update lockfile after version bump
+        if: ${{ steps.gate.outputs.run == 'true' }}
+        run: bun install
+
+      - name: Commit and push release files
+        if: ${{ steps.gate.outputs.run == 'true' }}
+        run: |
+          if git diff --quiet; then
+            echo "Nothing to commit"
+            exit 0
+          fi
+
+          git config user.name "GitHub Actions"
+          git config user.email "gh-actions[bot]@reforma.dev"
+
+          git add -A
+          git commit -m "chore(release): version package"
+          git push origin HEAD:main
+
+  publish-skills:
+    needs: publish-npm
+    if: ${{ needs.publish-npm.outputs.released == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Publish Agent Skills release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v${{ needs.publish-npm.outputs.version }}"
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Agent Skills release $TAG already exists"
+            exit 0
+          fi
+
+          gh skill publish --tag "$TAG"

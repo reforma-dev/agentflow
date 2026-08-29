@@ -1,6 +1,9 @@
 ---
 name: code-review
-description: Strict review of reuse, wrappers, and architecture. Reviewers collect; then you apply fixes. Verdict: keep, shrink, or burn.
+description: >-
+  Strict review of reuse, wrappers, and architecture. Reviewers collect, then
+  you apply fixes. Verdict is keep, shrink, or burn.
+license: MIT
 disable-model-invocation: true
 ---
 

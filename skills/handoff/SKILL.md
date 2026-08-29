@@ -1,30 +1,31 @@
 ---
 name: handoff
 description: >-
-  Write an AGENTFLOW handoff so the next chat can continue the next PR.
+  Save AGENTFLOW context to disk before continuing in a fresh chat.
+license: MIT
 disable-model-invocation: true
 ---
 
 # Handoff
 
-End of an implementation PR chat — not after grill. Write a file the
-**next** chat will `@`-attach. Cursor `/summarize` is a sketch — this
-file + the plan are the source of truth.
+Use this after an implementation PR when the next slice will continue in a
+fresh chat. Write a file the next chat can `@`-attach. The handoff + plan are
+the durable source of truth.
 
-Loop: [AGENTFLOW.md](../../../AGENTFLOW.md).
+Loop: the repo-root loop doc (`README.md` or `AGENTFLOW.md`).
 
 ## Steps
 
 1. **Find the plan.** Path the user named, the last handoff, or the plan in this
-   thread. No plan → write one from this chat’s PR list before continuing.
+   thread.
 2. **This PR.** What shipped (paths, commit hash if any). Done-when met or not.
 3. **Bleed.** Work that belongs to a later plan row but landed, or should have.
    Fold it into the plan: check off this PR, rewrite later rows. Do not leave
    the next chat to discover leftover files.
 4. **Next PR.** Title + done-when from the updated plan. One row only.
-5. **Write** `.scratch/handoffs/<slug>.md` (create dirs). Reuse the same slug
+5. **Write** `.agentflow/<slug>/handoff.md` (create dirs). Reuse the same slug
    for the feature so the next chat overwrites this file. Not OS temp.
-6. **Print** the path and: next chat attaches this file + the plan.
+6. **Print** the path and what the fresh chat should attach.
 
 Redact secrets. Do not paste diffs or OpenSpec bodies — point at paths.
 

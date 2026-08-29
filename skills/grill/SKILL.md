@@ -1,7 +1,7 @@
 ---
 name: grill
 description: Relentless interview to sharpen a plan or design until every branch is resolved.
-disable-model-invocation: true
+license: MIT
 ---
 
 # Grill
@@ -13,6 +13,10 @@ Use this for non-trivial product/architecture calls. Do not grill a one-line fix
 Do **not** create `CONTEXT.md`, ADRs, or tickets as you go. Capture settled decisions in the reply; if a lasting convention belongs in an `AGENTS.md`, say so and wait for the user to ask you to write it.
 
 ## Rounds
+
+Start by restating the task, the decisions already implied by the request, and
+any assumptions you would otherwise make. If there are no open questions, ask
+the user to confirm this reading.
 
 Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled. Ask the whole frontier in one round: number each question and give your recommended answer. Then wait.
 
@@ -40,6 +44,14 @@ Push back when a simpler approach fits. Name blockers instead of designing aroun
 
 ## Done
 
-The frontier is empty: every branch visited, nothing silently assumed. Do not implement.
+The frontier is empty, every branch has been visited, and the user has confirmed
+the final reading. Nothing is silently assumed. Do not implement before this
+confirmation.
 
-Then write the plan — load `plan`. One file. No handoff.
+After confirmation:
+
+- In Plan mode, continue with the agent's native planning flow.
+- If the user asked for a plan in a normal mode, load the `plan` skill and write
+  it in the same chat.
+- Otherwise, let the user choose the next step. A small task may continue
+  directly to implementation.
