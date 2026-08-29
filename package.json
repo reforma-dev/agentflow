@@ -1,6 +1,6 @@
 {
   "name": "@reforma/agentflow",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "An opinionated workflow for shipping production-ready changes with coding agents.",
   "author": "Reforma, Inc. <dev@reforma.ai>",
   "type": "module",
