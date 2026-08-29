@@ -1,28 +1,11 @@
-# AgentFlow
+<p align="center">
+  <img src="assets/banner.png" alt="AgentFlow — an opinionated workflow for coding agents" width="100%">
+</p>
 
-An opinionated workflow for producing high-quality, production-ready changes
-with coding agents.
-
-Medium and large tasks are difficult to carry through in a single chat without
-losing quality. The scope grows during implementation, earlier requirements
-disappear into the history, and unanswered questions are left for the agent to
-decide. Those decisions are often wrong. The longer the chat runs, the less
-reliable its context becomes, while compacting it or moving the work to a new
-chat loses the reasoning behind earlier decisions.
-
-For anything bigger than a quick fix, we usually start by exploring the existing
-feature, code, or technology. Once the agent knows the ground, we grill the idea
-and talk through the tricky parts before touching code. Then we usually write a
-plan and split the work into PR-sized chunks. Small tasks can skip the plan and
-go straight to implementation.
-
-Work through the chunks in order, however you prefer: stay in the same chat,
-summarize it between PRs, start a fresh chat, or write the code yourself. Review
-and commit each PR before moving to the next one, while the diff is still small
-enough to clean up properly. When the context gets noisy, summarize it or write
-a handoff to disk before continuing.
-
-The core loop is:
+<p align="center">
+  <a href="https://www.npmjs.com/package/@reforma/agentflow"><img src="https://img.shields.io/npm/v/@reforma/agentflow.svg" alt="npm"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/npm/l/@reforma/agentflow.svg" alt="MIT License"></a>
+</p>
 
 ```text
 Research → Grill → Plan → PR → Review → Commit
@@ -30,17 +13,37 @@ Research → Grill → Plan → PR → Review → Commit
                           └──── Next PR ─────┘
 ```
 
+```bash
+npx @reforma/agentflow init
+```
+
+# AgentFlow
+
+An opinionated workflow for shipping production-ready changes with coding
+agents — research when needed, grill decisions, plan PR-sized slices, then
+implement, review, and commit one at a time.
+
+Long chats lose quality: scope creeps, earlier decisions vanish into history,
+and the agent fills gaps with guesses. AgentFlow keeps the loop short and the
+artifacts on disk so the next chat (or a compacted one) can continue without
+re-deriving the plan.
+
 Research is optional, small tasks can skip the plan, and a handoff is only
-needed when you move the work to a fresh context.
+needed when you move unfinished work to a fresh context.
 
-Reusable agent skills are published from `skills/`:
+> [!TIP]
+> **Start with Grill.** After install, run `/grill` on your idea — almost every
+> task goes through it. Add `/research` when the area is unfamiliar, `/plan`
+> when the work needs more than one PR.
 
-- `/research` — save technology or landscape research for later chats
-- `/grill` — question an idea until the important decisions are clear
-- `/plan` — split the work into PR-sized slices
-- `/code-review` — review each slice for reuse and unnecessary complexity
-- `/handoff` — save context before moving to a fresh chat
-- `/tdd` — work through one red-green slice at a time
+| Skill          | What it does                                             |
+| -------------- | -------------------------------------------------------- |
+| `/research`    | Save technology or landscape research for later chats    |
+| `/grill`       | Question an idea until the important decisions are clear |
+| `/plan`        | Split the work into PR-sized slices                      |
+| `/code-review` | Review each slice for reuse and unnecessary complexity   |
+| `/handoff`     | Save context before moving to a fresh chat               |
+| `/tdd`         | Work through one red-green slice at a time               |
 
 ---
 
@@ -150,50 +153,51 @@ Attach the plan and handoff to a fresh chat when they exist, then return to step
 
 ## 📦 Install
 
-Install the complete workflow in a project:
-
 ```bash
 npx @reforma/agentflow init
 ```
 
-AgentFlow first asks which parts to install: the skills, the concise
-`AGENTFLOW.md` loop, and a one-line pointer in `AGENTS.md`. When you choose the
-skills, the `skills` CLI handles the skill picker, target agents, project or
-global scope, and installation method.
+Init installs every AgentFlow skill through the `skills` CLI first. That CLI
+asks for target agents, project or global scope, and the installation method.
+After skills finish, AgentFlow asks whether to set up docs. Yes writes
+`AGENTFLOW.md` and adds this pointer to `AGENTS.md`:
 
-Use its standard AgentFlow flags when the destination is already known:
-
-```bash
-npx @reforma/agentflow init --global --agent cursor
+```text
+Larger than a quick fix: follow @AGENTFLOW.md.
 ```
 
-For automation, accept every default without prompts:
-
-```bash
-npx @reforma/agentflow init --yes
-```
-
-Install only one skill without the workflow:
-
-```bash
-npx skills add reforma-dev/agentflow --skill plan
-```
-
-Update the complete workflow:
+Update the installed workflow:
 
 ```bash
 npx @reforma/agentflow@latest update
 ```
 
-Updates are non-interactive after setup and refresh only the AgentFlow parts
-selected during initialization. In a project without AgentFlow, `update`
-starts the same setup as `init`.
+Updates are non-interactive after setup and refresh only the parts selected
+during initialization. Without AgentFlow, `update` starts the same setup as
+`init`.
 
-Or update one independently installed skill:
+<details>
+<summary>More install options</summary>
+
+Known destination:
 
 ```bash
-npx skills update plan
+npx @reforma/agentflow init --global --agent cursor
 ```
+
+Automation without prompts:
+
+```bash
+npx @reforma/agentflow init --yes
+```
+
+One skill without the workflow:
+
+```bash
+npx skills add reforma-dev/agentflow --skill grill
+```
+
+</details>
 
 ---
 
