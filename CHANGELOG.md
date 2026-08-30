@@ -1,5 +1,11 @@
 # @reforma/agentflow
 
+## 1.1.5
+
+### Patch Changes
+
+- 1a2ecfe: Drop the repeated Grill confirmation line, and say optional steps can be skipped so review stays in the loop.
+
 ## 1.1.4
 
 ### Patch Changes
