@@ -1,5 +1,14 @@
 # @reforma/agentflow
 
+## 1.1.3
+
+### Patch Changes
+
+- f6be225: Rewrite the code-review skill as a parent-led review: unfixed findings are a
+  problem heading plus the change to make, not a keep / shrink / burn label.
+  Strip vendor-specific jargon from the other skills so they read the same in
+  any project.
+
 ## 1.1.2
 
 ### Patch Changes
