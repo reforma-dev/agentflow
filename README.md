@@ -31,17 +31,17 @@ Spec-driven frameworks such as OpenSpec and Spec Kit address this by moving inte
 AgentFlow is what survived half a year of shipping real PRs with agents:
 
 - **Specs ≠ shipped code.** Research and plans are working artifacts first. Commit them and keep using them as specs, leave them local, or delete them after the PR — AgentFlow does not prescribe their lifetime. Git and PRs remain the center of the workflow.
-- **Ceremony is a tax.** A spec-driven process every developer must learn, remember, and follow will eventually be bypassed. Its artifacts then go stale and start misleading future agents. With AgentFlow, you only need to start by clarifying the task. The agent knows when to research, make a plan, review the change, or prepare a handoff.
+- **Ceremony is a tax.** Spec-driven workflows only work when every developer learns and follows the process. Eventually someone bypasses it, and stale artifacts start misleading future agents. With AgentFlow, you start by clarifying the task and the agent carries the workflow from there.
 - **Discipline lives in the loop.** Decisions are settled before implementation, work is limited to one PR-sized slice, and that slice is reviewed before the next begins. You can skip steps that do not help, but the order stays the same.
 
 | Skill          | What it does                                                               |
 | -------------- | -------------------------------------------------------------------------- |
-| `/research`    | Save code or technology research for the context of current or later chats |
+| `/research`    | Save research for the current or a later chat                              |
 | `/grill`       | Question an idea until the important decisions are clear                   |
 | `/plan`        | Split the work into PR-sized slices                                        |
 | `/code-review` | Review the slice: reuse, leftover structure, and obvious defects           |
 | `/handoff`     | Pass context when you want to continue the work in another chat            |
-| `/tdd`         | Implement one PR at a time using test-driven development                   |
+| `/tdd`         | Work through one red-green slice at a time                                 |
 
 ---
 
@@ -94,9 +94,10 @@ Now the agent does not have to fill in the gaps while coding.
 
 ### 🗂️ Step 3. Plan and slice the work into PRs
 
-For a larger task, planning usually follows Grill in the same chat. If you asked
-Grill to plan next, it loads `/plan` automatically. You can also run `/plan`
-yourself.
+For a larger task, planning follows Grill in the same chat. After you confirm
+the reading, Grill loads `/plan` when the work needs more than one slice.
+Small confirmed work skips the plan and goes to implementation. You can also
+run `/plan` yourself.
 
 In a normal chat, `/plan` saves the result to `.agentflow/<slug>/plan.md`. In
 Native Plan mode, the agent uses its built-in planning flow and native plan

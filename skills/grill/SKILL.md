@@ -56,10 +56,12 @@ The frontier is empty, every branch has been visited, and the user has confirmed
 the final reading. Nothing is silently assumed. Do not implement before this
 confirmation.
 
-After confirmation:
+After confirmation, continue the loop yourself. Do not ask which skill to run
+next.
 
-- If a native planning flow is already open, continue there.
-- If the user asked for a plan, load the `plan` skill and write it in the same
-  chat.
-- Otherwise, let the user choose the next step. A small task may continue
-  directly to implementation.
+- A native planning flow is already open → continue there.
+- The confirmed work needs more than one shippable slice → load `plan` and
+  write it in this chat.
+- One small slice is enough → implement that slice.
+
+Do not implement before confirmation.
