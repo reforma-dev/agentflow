@@ -94,9 +94,10 @@ Now the agent does not have to fill in the gaps while coding.
 
 ### 🗂️ Step 3. Plan and slice the work into PRs
 
-For a larger task, planning usually follows Grill in the same chat. If you asked
-Grill to plan next, it loads `/plan` automatically. You can also run `/plan`
-yourself.
+For a larger task, planning follows Grill in the same chat. After you confirm
+the reading, Grill loads `/plan` when the work needs more than one slice.
+Small confirmed work skips the plan and goes to implementation. You can also
+run `/plan` yourself.
 
 In a normal chat, `/plan` saves the result to `.agentflow/<slug>/plan.md`. In
 Native Plan mode, the agent uses its built-in planning flow and native plan
