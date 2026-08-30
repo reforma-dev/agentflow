@@ -48,9 +48,11 @@ plan exists), and later rows match what remains.
 
 ## 5. Review
 
-Load `/code-review` on the completed slice and apply local shrinks.
+Load `/code-review` on the completed slice. Apply local shrinks and obvious
+fixes. Ask only on hard calls.
 
-**Done when:** the review has run and no unnecessary production structure remains.
+**Done when:** leftover production structure is gone, obvious defects are
+fixed, and any hard call is in front of the user.
 
 ## 6. Commit
 
