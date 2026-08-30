@@ -36,12 +36,12 @@ AgentFlow is what survived half a year of shipping real PRs with agents:
 
 | Skill          | What it does                                                               |
 | -------------- | -------------------------------------------------------------------------- |
-| `/research`    | Save code or technology research for the context of current or later chats |
+| `/research`    | Save research for the current or a later chat                              |
 | `/grill`       | Question an idea until the important decisions are clear                   |
 | `/plan`        | Split the work into PR-sized slices                                        |
 | `/code-review` | Review the slice: reuse, leftover structure, and obvious defects           |
 | `/handoff`     | Pass context when you want to continue the work in another chat            |
-| `/tdd`         | Implement one PR at a time using test-driven development                   |
+| `/tdd`         | Work through one red-green slice at a time                                 |
 
 ---
 
