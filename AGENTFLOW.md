@@ -49,10 +49,11 @@ plan exists), and later rows match what remains.
 ## 5. Review
 
 Load `/code-review` on the completed slice. Apply local shrinks and obvious
-fixes. Ask only on hard calls.
+fixes. Anything left unfixed is a problem heading plus the change to make.
 
 **Done when:** leftover production structure is gone, obvious defects are
-fixed, and any hard call is in front of the user.
+fixed, and every unfixed problem is in front of the user with a proposed
+fix.
 
 ## 6. Commit
 

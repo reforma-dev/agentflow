@@ -36,7 +36,7 @@ Then decide whether a second reader is worth the cost. Default is no.
 
 | Extra eyes        | When                                                                                          |
 | ----------------- | --------------------------------------------------------------------------------------------- |
-| none (default)    | You can finish reuse, smell, problems, and the verdict from this read.                        |
+| none (default)    | You can finish reuse, smell, problems, and the review from this read.                         |
 | one extra reader  | The diff touches a **critical surface** you cannot judge from this read alone. Name that gap. |
 
 A critical surface is real trust or a hunt you cannot finish here:
@@ -48,7 +48,7 @@ Do not launch extra readers because a file is TypeScript, because tests are in
 scope, or because "several files" changed. Extra readers are expensive. Skip
 them unless a trigger above is real.
 
-You still own reuse, wrappers, smell, problems, and the verdict. Extra eyes
+You still own reuse, wrappers, smell, problems, and the review. Extra eyes
 are a second read of a gap, not a replacement.
 
 ## 2. Extra eyes
@@ -93,8 +93,10 @@ helper is wrong unless it removes more structure than it adds.
 
 - Local, obvious, behavior-preserving → do it. Do not ask "fix or skip?".
 - Needs a product call, changes the contract, or is too large to do safely →
-  write it to the user with your recommended answer and wait.
-- Whole-shape `burn` (the approach is wrong) → say so and wait. Do not nibble.
+  do not edit it. Write a problem heading and the change you would make, then
+  wait.
+- The whole approach is wrong → one problem heading, the replacement you
+  would ship, then wait. Do not nibble.
 
 Tie-break: existing helper > inline > new helper. No edits outside scope.
 
@@ -110,29 +112,34 @@ A bug you fixed with no covering test → add a regression test or list
 
 ## Output
 
-```markdown
-**Verdict:** keep | shrink | burn — <one line>
+What you fixed, then one heading per leftover problem. Do not emit a
+keep / shrink / burn label. Skip the problem headings when nothing is left
+unfixed. Do not invent problems to fill the template.
 
+```markdown
 **Scope:** <paths>
 
 **Fixed**
 - <what you changed>
-
-**Asking you**
-- <hard call and your recommended answer>
 - none
+
+### <Problem>
+
+<What is wrong, in one or two sentences.>
+
+**Do this:** <the change you would make>
 
 **Checks**
 - `<command>` — exit <n>
 ```
 
-- `keep` — the shape is right. Small local fixes are fine.
-- `shrink` — leftover structure was removed, or still should be and you asked.
-- `burn` — the approach is wrong. Stop and ask.
+The heading is the problem, not a category. The line under it is the patch
+you would apply — a path, an API to call, or the shape to replace. One
+recommended action, not a menu.
 
 ## Done
 
 The scoped change has no leftover production structure you could remove
 locally, obvious defects are fixed, extra eyes ran only for a matching
-trigger, verification ran this turn, and every hard call is in front of the
-user.
+trigger, verification ran this turn, and every unfixed problem is a heading
+plus the change you would make.

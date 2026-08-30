@@ -134,8 +134,8 @@ pass, then apply any scope changes to later rows.
 ### 🤖 Step 5. Agent review
 
 Run `/code-review` on the completed PR. It checks reuse, leftover structure,
-and obvious defects. Local fixes land without asking. Anything that needs a
-product call goes back to you. Verdict: keep, shrink, or burn.
+and obvious defects. Local fixes land without asking. Anything left unfixed
+comes back as a problem heading plus the change it would make.
 
 ### ✅ Step 6. Your review, then commit
 
