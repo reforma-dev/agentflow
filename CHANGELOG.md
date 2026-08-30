@@ -1,5 +1,12 @@
 # @reforma/agentflow
 
+## 1.1.4
+
+### Patch Changes
+
+- e1b02d9: After Grill confirmation, continue the loop: plan when the work needs more than one slice, otherwise implement. Do not wait for the user to pick the next skill.
+- b3c630d: Fix the README skill table: research saves notes for a later chat, and tdd is one red-green slice, not one PR.
+
 ## 1.1.3
 
 ### Patch Changes
