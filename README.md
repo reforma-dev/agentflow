@@ -32,7 +32,7 @@ AgentFlow is what survived half a year of shipping real PRs with agents:
 
 - **Specs ≠ shipped code.** Research and plans are working artifacts first. Commit them and keep using them as specs, leave them local, or delete them after the PR — AgentFlow does not prescribe their lifetime. Git and PRs remain the center of the workflow.
 - **Ceremony is a tax.** Spec-driven workflows only work when every developer learns and follows the process. Eventually someone bypasses it, and stale artifacts start misleading future agents. With AgentFlow, you start by clarifying the task and the agent carries the workflow from there.
-- **Discipline lives in the loop.** Decisions are settled before implementation, work is limited to one PR-sized slice, and that slice is reviewed before the next begins. You can skip steps that do not help, but the order stays the same.
+- **Discipline lives in the loop.** Decisions are settled before implementation, work is limited to one PR-sized slice, and that slice is reviewed before the next begins. Optional steps can be skipped, but the order stays the same.
 
 | Skill          | What it does                                                               |
 | -------------- | -------------------------------------------------------------------------- |

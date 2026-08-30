@@ -63,5 +63,3 @@ next.
 - The confirmed work needs more than one shippable slice → load `plan` and
   write it in this chat.
 - One small slice is enough → implement that slice.
-
-Do not implement before confirmation.
