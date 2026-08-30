@@ -12,7 +12,8 @@ Don't mock:
 - Internal collaborators
 - Anything you control
 
-Use the project's test runner (nearest `AGENTS.md`). Vitest: `vi.fn`, `vi.mock`.
+Use the project's test runner and its mock helpers. Do not invent a second
+runner.
 
 ## Designing for mockability
 

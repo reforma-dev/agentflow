@@ -11,7 +11,8 @@ license: MIT
 
 TDD is the red → green loop. This skill is the reference that makes that loop produce tests worth keeping: what a good test is, where tests go, the anti-patterns, and the rules of the loop. Every section applies on every cycle — consult them before and during the loop, not after.
 
-When exploring the codebase, read the nearest `AGENTS.md` so test names and interface vocabulary match the area's language. Explore per root `AGENTS.md`.
+When exploring the codebase, read the nearest project guide (`AGENTS.md` or
+equivalent) so test names and interface vocabulary match the area's language.
 
 ## What a good test is
 
@@ -27,7 +28,10 @@ A **seam** is the public boundary you test at: the interface where you observe b
 
 Ask: "What's the public interface, and which seams should we test?"
 
-Root `AGENTS.md` wins: do not add a file, port, or wrapper so a test can reach inside. One real adapter is not a seam — two (production + test, or two backends) is. Don't invent `IFooService` for an in-process collaborator you own.
+The project's own guide wins: do not add a file, port, or wrapper so a test
+can reach inside. One real adapter is not a seam — two (production + test, or
+two backends) is. Don't invent `IFooService` for an in-process collaborator
+you own.
 
 ## Anti-patterns
 

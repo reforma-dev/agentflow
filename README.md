@@ -39,7 +39,7 @@ AgentFlow is what survived half a year of shipping real PRs with agents:
 | `/research`    | Save code or technology research for the context of current or later chats |
 | `/grill`       | Question an idea until the important decisions are clear                   |
 | `/plan`        | Split the work into PR-sized slices                                        |
-| `/code-review` | Review the written code for reuse and leftover structure                   |
+| `/code-review` | Review the slice: reuse, leftover structure, and obvious defects           |
 | `/handoff`     | Pass context when you want to continue the work in another chat            |
 | `/tdd`         | Implement one PR at a time using test-driven development                   |
 
@@ -133,9 +133,9 @@ pass, then apply any scope changes to later rows.
 
 ### 🤖 Step 5. Agent review
 
-Run `/code-review` on the completed PR. It looks for code to reuse, unnecessary
-wrappers, and avoidable complexity. It fixes small local problems and returns a
-verdict: keep, shrink, or burn.
+Run `/code-review` on the completed PR. It checks reuse, leftover structure,
+and obvious defects. Local fixes land without asking. Anything left unfixed
+comes back as a problem heading plus the change it would make.
 
 ### ✅ Step 6. Your review, then commit
 

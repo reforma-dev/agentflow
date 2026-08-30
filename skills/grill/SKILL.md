@@ -10,7 +10,9 @@ Interview until you reach a shared understanding. Map the work as a **design tre
 
 Use this for non-trivial product/architecture calls. Do not grill a one-line fix.
 
-Do **not** create `CONTEXT.md`, ADRs, or tickets as you go. Capture settled decisions in the reply; if a lasting convention belongs in an `AGENTS.md`, say so and wait for the user to ask you to write it.
+Do **not** create extra docs, ADRs, or tickets as you go. Capture settled
+decisions in the reply; if a lasting convention belongs in the project's
+agent guide, say so and wait for the user to ask you to write it.
 
 ## Rounds
 
@@ -36,11 +38,17 @@ Each round of answers reshapes the tree. Recompute the frontier. A question that
 
 ## Facts vs decisions
 
-Finding _facts_ is your job. When a frontier question needs something from the repo, look it up (nearest `AGENTS.md`) — don't ask the user for anything you can read. A running lookup is an unsettled prerequisite: ask the rest of the frontier now.
+Finding _facts_ is your job. When a frontier question needs something from the
+repo, look it up — don't ask the user for anything you can read. Follow the
+nearest project guide (`AGENTS.md` or equivalent). A running lookup is an
+unsettled prerequisite: ask the rest of the frontier now.
 
 The _decisions_ are the user's. Put each to them and wait.
 
-Push back when a simpler approach fits. Name blockers instead of designing around them. Recommend the project's default (nearest `AGENTS.md`: surgical, inline, no new files) unless the user has a reason not to.
+Push back when a simpler approach fits. Name blockers instead of designing
+around them. Recommend the project's default unless the user has a reason not
+to. If the guide is silent, prefer the smallest change that matches nearby
+code.
 
 ## Done
 
@@ -50,8 +58,8 @@ confirmation.
 
 After confirmation:
 
-- In Plan mode, continue with the agent's native planning flow.
-- If the user asked for a plan in a normal mode, load the `plan` skill and write
-  it in the same chat.
+- If a native planning flow is already open, continue there.
+- If the user asked for a plan, load the `plan` skill and write it in the same
+  chat.
 - Otherwise, let the user choose the next step. A small task may continue
   directly to implementation.

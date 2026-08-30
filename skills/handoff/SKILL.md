@@ -10,7 +10,7 @@ license: MIT
 # Handoff
 
 Use this after an implementation PR when the next slice will continue in a
-fresh chat. Write a file the next chat can `@`-attach. The handoff + plan are
+fresh chat. Write a file the next chat can attach. The handoff + plan are
 the durable source of truth.
 
 Loop: repo-root `AGENTFLOW.md`.
@@ -28,7 +28,7 @@ Loop: repo-root `AGENTFLOW.md`.
    for the feature so the next chat overwrites this file. Not OS temp.
 6. **Print** the path and what the fresh chat should attach.
 
-Redact secrets. Do not paste diffs or OpenSpec bodies — point at paths.
+Redact secrets. Do not paste diffs or long spec bodies — point at paths.
 
 If the user passed a focus, that is the next chat’s Next PR.
 
@@ -38,7 +38,7 @@ If the user passed a focus, that is the next chat’s Next PR.
 # Handoff: <slug>
 
 > Next chat: read this file and the plan. Implement **only** Next PR.
-> Do not resurrect discarded approaches from Cursor summarize.
+> Do not resurrect discarded approaches from a chat summary.
 
 ## Plan
 

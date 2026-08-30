@@ -67,7 +67,9 @@ it("should sum line items", () => {
 });
 ```
 
-**Low-value mapping tests** — asserting `.map` / array shape with no behavior. Skip or drop them rather than warping production code for reachability (root `AGENTS.md`).
+**Low-value mapping tests** — asserting `.map` / array shape with no behavior.
+Skip or drop them rather than warping production code so a test can reach
+inside.
 
 ## Mutation check
 
