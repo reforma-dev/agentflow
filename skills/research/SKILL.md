@@ -50,7 +50,8 @@ Write the notes in the user's language.
 
 When the question is about an existing project:
 
-1. Read the nearest `AGENTS.md` and the repository's exploration rules.
+1. Read the nearest project guide (`AGENTS.md` or equivalent) and the
+   repository's exploration rules.
 2. Try the current behavior when possible.
 3. Find the entry points, public interfaces, modules, and data flow.
 4. Follow the important path end to end. Verify call graph guesses with text

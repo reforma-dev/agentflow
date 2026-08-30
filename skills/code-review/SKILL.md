@@ -41,7 +41,7 @@ Then decide whether a second reader is worth the cost. Default is no.
 
 A critical surface is real trust or a hunt you cannot finish here:
 
-- auth, secrets, injection, user input, sandbox, or network
+- auth, secrets, injection, user input, or network
 - an existing API that may live far outside this read (another package or app)
 
 Do not launch extra readers because a file is TypeScript, because tests are in
@@ -63,7 +63,8 @@ cannot cover it yourself.
 
 ## 3. Fix
 
-You review and you fix. Do not delegate edits. Follow the nearest `AGENTS.md`.
+You review and you fix. Do not delegate edits. Follow the nearest project
+guide (`AGENTS.md` or equivalent).
 
 Preserve behavior: only **how**, not **what**. Prefer readable, explicit code
 over fewer lines. Nested ternaries, dense one-liners, and mashed concerns are
@@ -102,7 +103,7 @@ Tie-break: existing helper > inline > new helper. No edits outside scope.
 No pass / done / clean claim without a command you ran in **this** turn.
 Identify the command → run it full → read exit and failures → then claim.
 
-Use the project's test and lint for the scoped files (nearest `AGENTS.md`).
+Use the project's test and lint for the scoped files.
 
 A bug you fixed with no covering test → add a regression test or list
 `no test: …`.

@@ -17,9 +17,11 @@ plan.
 
 ## Where
 
-- **Plan mode:** plan artifact / reply only. No `.agentflow/` files.
-- **Agent mode:** `.agentflow/<slug>/plan.md` (kebab-case from the feature; reuse the slug). Print the path.
-- Another machine or person: OpenSpec or a `*.md` on the branch.
+- **Native planner** (built-in plan UI): plan artifact / reply only. No
+  `.agentflow/` files.
+- **Otherwise:** `.agentflow/<slug>/plan.md` (kebab-case from the feature;
+  reuse the slug). Print the path.
+- A plan file already on the branch: update that file.
 
 ## Shape
 
