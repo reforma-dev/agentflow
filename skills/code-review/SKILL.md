@@ -28,16 +28,15 @@ user changes.
 
 ## 1. Triage
 
-Read the scoped diff. **Reuse and smell are always your checks** — not optional
-bots. Look for reinvented APIs, wrappers, pass-throughs, and muddy shape on
-every review.
+Read the scoped diff. You do reuse and smell on every review: reinvented APIs,
+wrappers, pass-throughs, muddy shape.
 
 Then decide whether a second reader is worth the cost. Default is no.
 
-| Extra eyes        | When                                                                                          |
-| ----------------- | --------------------------------------------------------------------------------------------- |
-| none (default)    | You can finish reuse, smell, problems, and the review from this read.                         |
-| one extra reader  | The diff touches a **critical surface** you cannot judge from this read alone. Name that gap. |
+| Extra eyes       | When                                                                                          |
+| ---------------- | --------------------------------------------------------------------------------------------- |
+| none (default)   | You can finish reuse, smell, problems, and the review from this read.                         |
+| one extra reader | The diff touches a **critical surface** you cannot judge from this read alone. Name that gap. |
 
 A critical surface is real trust or a hunt you cannot finish here:
 
@@ -57,6 +56,9 @@ Skip unless triage named a gap.
 
 Launch **one** extra reader for that gap. They must not edit. Give them the
 scoped paths and what you need judged. Do not tell them how to find the files.
+
+Existing API outside this read → read [reuse.md](reuse.md) and spawn a
+read-only generic reader with that file as the prompt.
 
 Do not launch a second reader unless a second trigger also matches and you
 cannot cover it yourself.
@@ -120,6 +122,7 @@ unfixed. Do not invent problems to fill the template.
 **Scope:** <paths>
 
 **Fixed**
+
 - <what you changed>
 - none
 
@@ -130,6 +133,7 @@ unfixed. Do not invent problems to fill the template.
 **Do this:** <the change you would make>
 
 **Checks**
+
 - `<command>` — exit <n>
 ```
 
