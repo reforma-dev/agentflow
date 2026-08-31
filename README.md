@@ -34,14 +34,15 @@ AgentFlow is what survived half a year of shipping real PRs with agents:
 - **Ceremony is a tax.** Spec-driven workflows only work when every developer learns and follows the process. Eventually someone bypasses it, and stale artifacts start misleading future agents. With AgentFlow, you start by clarifying the task and the agent carries the workflow from there.
 - **Discipline lives in the loop.** Decisions are settled before implementation, work is limited to one PR-sized slice, and that slice is reviewed before the next begins. Optional steps can be skipped, but the order stays the same.
 
-| Skill          | What it does                                                               |
-| -------------- | -------------------------------------------------------------------------- |
-| `/research`    | Save research for the current or a later chat                              |
-| `/grill`       | Question an idea until the important decisions are clear                   |
-| `/plan`        | Split the work into PR-sized slices                                        |
-| `/code-review` | Review the slice: reuse, leftover structure, and obvious defects           |
-| `/handoff`     | Pass context when you want to continue the work in another chat            |
-| `/tdd`         | Work through one red-green slice at a time                                 |
+| Skill          | What it does                                                     |
+| -------------- | ---------------------------------------------------------------- |
+| `/research`    | Save research for the current or a later chat                    |
+| `/grill`       | Question an idea until the important decisions are clear         |
+| `/plan`        | Split the work into PR-sized slices                              |
+| `/code-review` | Review the slice: reuse, leftover structure, and obvious defects |
+| `/handoff`     | Pass context when you want to continue the work in another chat  |
+| `/tdd`         | Work through one red-green slice at a time                       |
+| `/document`    | Turn research, a plan, or a shipped change into a project page   |
 
 ---
 
@@ -56,6 +57,7 @@ Research helps when the agent does not know the area, and most larger tasks also
 5. Agent review
 6. Your review, then commit
 7. Refresh the context when needed or start the new chat
+8. Archive / document the changes
 
 Repeat steps 4–7 until every PR in the plan is complete.
 
@@ -149,6 +151,16 @@ summarize it or start a fresh one. Run `/handoff` to save what shipped, what
 changed, and which PR comes next.
 
 Attach the plan and handoff to a fresh chat when they exist, then return to step 4.
+
+### 📚 Step 8. Archive / document the change
+
+Run `/document` when the work should become a durable project page — after
+research, or after the plan is shipped. It updates the existing page for that
+domain when one exists. Otherwise it writes into the project's docs tree, or
+`.agentflow/docs/<domain>/`. Then it removes the packaged `.agentflow/<slug>/`
+working files.
+
+Skip this step when no page is needed.
 
 ## 📦 Install
 

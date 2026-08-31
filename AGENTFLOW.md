@@ -10,7 +10,8 @@ Research → Grill → Plan → PR → Review → Commit
 ```
 
 Skip Research when the area is already clear. Skip Plan when one small slice is
-enough. Run Handoff only when unfinished work moves to a fresh context.
+enough. Run Handoff only when unfinished work moves to a fresh context. Run
+Document when the work should become a project page.
 
 ## 1. Research (optional)
 
@@ -70,3 +71,12 @@ and handoff there, then resume at step 4.
 
 **Done when:** `.agentflow/<feature>/handoff.md` exists, or the current chat
 continues without a context move.
+
+## 8. Archive / document (optional)
+
+Load `/document` when research, a plan, or a shipped change should become a
+project page. Updates the existing domain page when one exists. Else writes
+into the human docs tree, or `.agentflow/docs/<domain>/`. Then removes the
+packaged `.agentflow/<slug>/` working files.
+
+**Done when:** the domain page is current, or the step was skipped.

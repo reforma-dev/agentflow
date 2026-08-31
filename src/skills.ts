@@ -10,6 +10,7 @@ export const AGENTFLOW_SKILLS = [
   'code-review',
   'handoff',
   'tdd',
+  'document',
 ];
 export const SKILLS_SOURCE = 'reforma-dev/agentflow';
 

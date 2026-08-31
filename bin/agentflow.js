@@ -84,7 +84,8 @@ var AGENTFLOW_SKILLS = [
   "plan",
   "code-review",
   "handoff",
-  "tdd"
+  "tdd",
+  "document"
 ];
 var SKILLS_SOURCE = "reforma-dev/agentflow";
 var runSkills = (args) => {
