@@ -1,5 +1,16 @@
 # @reforma/agentflow
 
+## 1.2.0
+
+### Minor Changes
+
+- 476576d: Add `/document` to turn research, a plan, or a shipped change into a project
+  page, then remove the packaged `.agentflow/` working files.
+
+### Patch Changes
+
+- fe9149a: Disclose a reuse-hunt prompt from code-review when an existing API may live outside the parent read.
+
 ## 1.1.5
 
 ### Patch Changes
