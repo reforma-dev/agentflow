@@ -20,10 +20,10 @@ Loop: repo-root `AGENTFLOW.md`.
 1. **Find the plan.** Path the user named, the last handoff, or the plan in this
    thread.
 2. **This PR.** What shipped (paths, commit hash if any). Done-when met or not.
-3. **Bleed.** Work that belongs to a later plan row but landed, or should have.
-   Fold it into the plan: check off this PR, rewrite later rows. Do not leave
+3. **Bleed.** Work that belongs to a later PR but landed, or should have.
+   Fold it into the plan: check off this PR, rewrite later PRs. Do not leave
    the next chat to discover leftover files.
-4. **Next PR.** Title + done-when from the updated plan. One row only.
+4. **Next PR.** Title + done-when from the updated plan. One PR only.
 5. **Write** `.agentflow/<slug>/handoff.md` (create dirs). Reuse the same slug
    for the feature so the next chat overwrites this file. Not OS temp.
 6. **Print** the path and what the fresh chat should attach.
@@ -66,5 +66,5 @@ suggested: tdd / code-review / craft skills for the next slice
 ## Done
 
 Handoff is complete when `.agentflow/<slug>/handoff.md` exists, the plan matches
-what shipped, Next PR is one row, and the printed path is what the fresh chat
+what shipped, Next PR is one heading, and the printed path is what the fresh chat
 should attach.

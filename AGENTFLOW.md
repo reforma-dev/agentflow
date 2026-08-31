@@ -35,17 +35,17 @@ change how the work will be done.
 Load `/plan` when the confirmed work needs more than one shippable slice.
 Small confirmed work continues at step 4 without a plan file.
 
-**Done when:** `.agentflow/<feature>/plan.md` exists with ordered unchecked PR
-rows, or the plan was skipped for a single small slice.
+**Done when:** `.agentflow/<feature>/plan.md` exists with ordered unchecked PRs,
+or the plan was skipped for a single small slice.
 
 ## 4. Implement one PR
 
-Implement only the first unchecked plan row. Without a plan, keep one reviewable
-slice. Load project craft skills named in `AGENTS.md`. Load `/tdd` for
-test-first work.
+Implement only the first PR whose Complete box is unchecked. Nested tasks
+are progress inside that PR. Without a plan, keep one reviewable slice. Load
+project craft skills named in `AGENTS.md`. Load `/tdd` for test-first work.
 
-**Done when:** the slice meets its verify checks, its plan row is checked (if a
-plan exists), and later rows match what remains.
+**Done when:** the slice meets its verify checks, its Complete box is checked
+(if a plan exists), and later PRs match what remains.
 
 ## 5. Review
 
@@ -59,10 +59,10 @@ fix.
 ## 6. Commit
 
 Commit with the project's normal workflow, then return to step 4 for the next
-unchecked row.
+unchecked PR.
 
 **Done when:** the slice is committed (or staged per project rules) and the next
-row is identified or the plan is complete.
+PR is identified or the plan is complete.
 
 ## 7. Handoff (fresh context)
 

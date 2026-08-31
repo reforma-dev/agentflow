@@ -132,7 +132,7 @@ Load any relevant skills named in `AGENTS.md`. If work spills into a later PR,
 update the plan instead of silently expanding the current one.
 
 Before review, update `plan.md`: check the completed PR only after its checks
-pass, then apply any scope changes to later rows.
+pass, then apply any scope changes to later PRs.
 
 ### 🤖 Step 5. Agent review
 

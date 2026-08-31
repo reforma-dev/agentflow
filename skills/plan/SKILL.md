@@ -9,11 +9,10 @@ license: MIT
 
 # Plan
 
-Write **one** plan that another developer or agent can pick up. Do not implement. Do not write a handoff.
+Write **one** plan another developer or agent can pick up.
 
-If important decisions are still open, load `grill` first. Resume the plan after
-the user confirms the final reading. One-line or obvious scope can skip the
-plan.
+Open decisions → load `grill`, resume after the user confirms the reading.
+One-line or obvious scope skips the plan. Do not implement.
 
 ## Where
 
@@ -36,52 +35,68 @@ plan.
 **Approach:** 2–3 sentences — the chosen reading
 **Reuse:** existing APIs this plan calls (`path`)
 
-## Files
+## PR 1 — <title>
 
-- `path` — what changes (or `create`)
+- [ ] Complete
+  - [ ] <outcome> — change `symbol` in `path`
+  - [ ] <outcome> — change `symbol` in `path`
 
-- [ ] PR 1 — <title>
-      done when: <observable>
-      verify: <command>
+**Files**
+- `path` — what changes
+- `path` — create: cannot live in `existing` because <reason>
 
-- [ ] PR 2 — …
+**Done when:** <one observable sentence>
+**Verify:** `<command>`
+
+## PR 2 — <title>
+
+- [ ] Complete
+  - [ ] <outcome> — change `symbol` in `path`
+
+**Files**
+- `path` — what changes
+
+**Done when:** …
+**Verify:** `<command>`
 ```
 
-Each row is the smallest complete, independently shippable change that does one
-useful thing and has one clear way to test it. Put lower-level pieces before the
-code that uses them.
+Nested tasks are progress. Check **Complete** only after done-when and verify
+pass. The next PR starts from an unchecked Complete box, not a checked child.
+
+Each PR is the smallest complete, independently shippable change that does one
+useful thing and has one clear way to test it. Foundations before consumers.
 
 ## Slicing
 
-Common shapes:
+- **Blocked by shape:** refactor the existing module, then the feature.
+- **Contract missing:** add the type or endpoint, then the consumer.
+- **Feature:** change the module that owns the behavior. Extract when this plan
+  already has a second consumer.
+- **Small:** one vertical slice.
 
-- **Full-stack feature:** behavior-preserving refactoring, then shared types and
-  backend, then frontend integration.
-- **Frontend feature:** reusable components, then shared runtime or wiring, then
-  user-facing interfaces.
-- **Small feature:** one complete vertical slice.
-
-Give a foundation its own row when it is independently useful. Keep
-feature-local components and wiring with their first consumer. Split distinct
-outcomes or architectural decisions that can ship separately.
+A foundation gets its own PR when others can ship against it. Feature-local UI
+and wiring stay with their first consumer. Distinct outcomes that can ship
+separately get separate PRs. More than five nested tasks → split the PR.
 
 ## Rules
 
-- Ground every row in files you read. Cite a path → it exists, or mark `create`.
+- Ground every PR in the files listed under it. A cited path exists, or it is
+  `create`.
 - One approach. No menu, no TBD, no “handle edge cases”, no “similar to PR n”.
-- File map before rows. Reuse before create.
-- Tight: settled model + rows. Cut prose, keep paths.
-- `done when` is observable. `verify` is the command the implementer runs.
+- **Reuse** names the APIs to call. Tasks name the `symbol` in `path` to change.
+- Files are edits. A `create` line names the existing file it cannot join.
+  A one-call helper, pass-through, barrel, or mapping-only test belongs at the
+  call site.
+- **Done when** is one observable sentence. **Verify** is the command to run.
 
 ## Self-check
 
-1. Every settled decision has a row or is named out of scope.
-2. Every path exists or is marked `create`.
-3. No placeholders.
-4. Another developer or agent can open the file and ship PR 1 without this conversation.
-5. Every row leaves the repository working and does not need the next row to
-   justify its code.
+1. Every settled decision has a PR or is named out of scope.
+2. Every path exists, or `create` names the existing home it cannot join.
+3. A person can open PR 1, read its tasks, and ship without this conversation.
+4. Every PR leaves the repository working without the next PR to justify it.
 
 ## Output
 
-Print the path. The implementer starts with the first unchecked row, in this context or a new one.
+Print the path. The implementer starts with the first PR whose Complete box is
+unchecked, in this context or a new one.
