@@ -44,7 +44,7 @@ its own file.
 Keep a narrow investigation in `index.md` instead of creating empty pages. For
 larger research, keep details out of `index.md` and link to the topic pages.
 
-Write the notes in the user's language.
+Write the notes in English.
 
 ## Research the code
 
