@@ -44,7 +44,13 @@ its own file.
 Keep a narrow investigation in `index.md` instead of creating empty pages. For
 larger research, keep details out of `index.md` and link to the topic pages.
 
-Write the notes in English.
+## Language
+
+Write the notes in the **project's** language. Read it from README, `AGENTS.md`,
+or other human docs in the repo. Missing, mixed, or English → English.
+
+The chat language does not decide this. Existing `.agentflow/` notes do not
+either — they may be wrong. The reply to the user can match theirs.
 
 ## Research the code
 

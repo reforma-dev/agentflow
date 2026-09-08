@@ -33,10 +33,14 @@ No page owns this domain → create one page in that tree, named for the
 domain. No human docs tree → write `.agentflow/docs/<domain>/`. Do not
 create a repo-root `docs/`.
 
-Read that page (or neighbors) for tone and terms. Write in that language, or
-the user's if there are no neighbors. A different Diátaxis job already
-covered nearby → link it. Do not add a second page of the same job for the
-same domain.
+Read that page (or neighbors in the docs tree) for tone and terms.
+
+Write in the **project's** language. Read it from the page you are updating,
+README, `AGENTS.md`, or other human docs. Missing, mixed, or English → English.
+The chat language and `.agentflow/` files do not decide this.
+
+A different Diátaxis job already covered nearby → link it. Do not add a
+second page of the same job for the same domain.
 
 ## 3. Job
 
