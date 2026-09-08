@@ -95,10 +95,9 @@ helper is wrong unless it removes more structure than it adds.
 
 - Local, obvious, behavior-preserving → do it. Do not ask "fix or skip?".
 - Needs a product call, changes the contract, or is too large to do safely →
-  do not edit it. Write a problem heading and the change you would make, then
-  wait.
-- The whole approach is wrong → one problem heading, the replacement you
-  would ship, then wait. Do not nibble.
+  do not edit it. Explain the problem and how to fix it, then wait.
+- The whole approach is wrong → explain the replacement you would ship, then
+  wait. Do not nibble.
 
 Tie-break: existing helper > inline > new helper. No edits outside scope.
 
@@ -114,36 +113,27 @@ A bug you fixed with no covering test → add a regression test or list
 
 ## Output
 
-What you fixed, then one heading per leftover problem. Do not emit a
-keep / shrink / burn label. Skip the problem headings when nothing is left
-unfixed. Do not invent problems to fill the template.
+This is the whole reply. Ordinary sentences, for the person who asked.
 
 ```markdown
-**Scope:** <paths>
-
-**Fixed**
-
-- <what you changed>
-- none
+<What you actually changed, in one short paragraph. Omit this if you changed nothing.>
 
 ### <Problem>
 
-<What is wrong, in one or two sentences.>
+<What's wrong and why it matters.>
 
-**Do this:** <the change you would make>
-
-**Checks**
-
-- `<command>` — exit <n>
+<How to fix it. One obvious change → that change. A call they have to make → the real options and which you'd pick.>
 ```
 
-The heading is the problem, not a category. The line under it is the patch
-you would apply — a path, an API to call, or the shape to replace. One
-recommended action, not a menu.
+The heading is the problem, not a category. Skip leftover headings when nothing
+is left unfixed. Do not invent problems.
+
+A check that failed → say which command and what failed. Passed checks stay out
+of the reply.
 
 ## Done
 
 The scoped change has no leftover production structure you could remove
 locally, obvious defects are fixed, extra eyes ran only for a matching
-trigger, verification ran this turn, and every unfixed problem is a heading
-plus the change you would make.
+trigger, verification ran this turn, and every unfixed problem is in front of
+the user in plain language with how to fix it.

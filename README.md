@@ -138,7 +138,7 @@ pass, then apply any scope changes to later PRs.
 
 Run `/code-review` on the completed PR. It checks reuse, leftover structure,
 and obvious defects. Local fixes land without asking. Anything left unfixed
-comes back as a problem heading plus the change it would make.
+comes back in plain language: the problem, and how to fix it.
 
 ### ✅ Step 6. Your review, then commit
 

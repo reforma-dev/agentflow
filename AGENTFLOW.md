@@ -50,11 +50,11 @@ project craft skills named in `AGENTS.md`. Load `/tdd` for test-first work.
 ## 5. Review
 
 Load `/code-review` on the completed slice. Apply local shrinks and obvious
-fixes. Anything left unfixed is a problem heading plus the change to make.
+fixes. Anything left unfixed is explained in plain language with how to
+fix it (or the real options if the call is the user's).
 
 **Done when:** leftover production structure is gone, obvious defects are
-fixed, and every unfixed problem is in front of the user with a proposed
-fix.
+fixed, and every unfixed problem is in front of the user with how to fix it.
 
 ## 6. Commit
 
