@@ -1,5 +1,11 @@
 # @reforma/agentflow
 
+## 1.2.1
+
+### Patch Changes
+
+- a3d0e8c: Make code-review reply with what it fixed and leftover problems in plain language, not a keep/shrink/burn form.
+
 ## 1.2.0
 
 ### Minor Changes
