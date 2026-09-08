@@ -1,5 +1,11 @@
 # @reforma/agentflow
 
+## 1.2.2
+
+### Patch Changes
+
+- 7181b3d: Write research notes and document pages in the project's language (default English), not the chat or `.agentflow/` files.
+
 ## 1.2.1
 
 ### Patch Changes
