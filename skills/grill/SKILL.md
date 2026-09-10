@@ -23,15 +23,34 @@ the user to confirm this reading.
 Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled. Ask the whole frontier in one round: number each question and give your recommended answer. Then wait.
 
 ```
-❓ **Q1** - **<title>**: <body, including choices>
+❓ **Q1** - **<title>**
 
-➡️ <your recommended answer>
+<body: facts and constraints only. No options here.>
 
----
+- **(a)** <one approach>
+- **(b)** <one approach>
+- **(c)** <one approach>
 
-❓ **Q2** - **<title>**: <body>
+➡️ **(a)** — <why this one>
+```
 
-➡️ <your recommended answer>
+Each option is its own list item: one letter, one approach. Never put two
+letters in the same paragraph, and never inline `(a)` `(b)` `(c)` in the
+question body. A host multiple-choice control is fine when it keeps the same
+letters and one option per choice.
+
+A question with no discrete approaches omits the list: body, then ➡️.
+
+```
+❓ **Q2** - **Where the worker runs**
+
+The job can take 20 minutes. The HTTP request cannot.
+
+- **(a)** One call: start and wait until done; heartbeat so the worker is not reaped
+- **(b)** Start returns a job id; a second tool polls
+- **(c)** One tool, wait by default, `wait=false` to return the id
+
+➡️ **(a)** — One tool, like the button. Same timeout as the job.
 ```
 
 Each round of answers reshapes the tree. Recompute the frontier. A question that depends on another still open in this round belongs to a _later_ round.
@@ -52,14 +71,22 @@ code.
 
 ## Done
 
-The frontier is empty, every branch has been visited, and the user has confirmed
-the final reading. Nothing is silently assumed. Do not implement before this
-confirmation.
+The frontier is empty and every branch has been visited. Restate the settled
+list as bullets — what we will do, not the discarded options. Wait for the
+user to confirm that list. Nothing is silently assumed. Do not implement
+before this confirmation.
+
+```
+**Settled**
+- <confirmed answer>
+- <confirmed answer>
+```
 
 After confirmation, continue the loop yourself. Do not ask which skill to run
 next.
 
 - A native planning flow is already open → continue there.
 - The confirmed work needs more than one shippable slice → load `plan` and
-  write it in this chat.
+  write it in this chat. The settled list becomes **Decisions** in the plan;
+  do not leave it only in this reply.
 - One small slice is enough → implement that slice.

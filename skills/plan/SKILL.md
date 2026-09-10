@@ -9,7 +9,7 @@ license: MIT
 
 # Plan
 
-Write **one** plan another developer or agent can pick up.
+Write **one** plan another developer or agent can pick up without this chat.
 
 Open decisions → load `grill`, resume after the user confirms the reading.
 One-line or obvious scope skips the plan. Do not implement.
@@ -32,17 +32,32 @@ One-line or obvious scope skips the plan. Do not implement.
 > Record scope changes before leaving the PR.
 
 **Goal:** one sentence
-**Approach:** 2–3 sentences — the chosen reading
+**Approach:** 2–3 sentences — how the pieces fit
+
+**Decisions**
+
+- <confirmed grill answer>
+- <confirmed grill answer>
+
 **Reuse:** existing APIs this plan calls (`path`)
+
+## Out of scope
+
+- <confirmed no>
 
 ## PR 1 — <title>
 
+**This PR:** 2–4 sentences for someone who was not in this chat. Why this
+slice exists, what it leaves working on its own, which settled decisions it
+encodes. Not a file list.
+
 - [ ] Complete
-  - [ ] <outcome> — change `symbol` in `path`
-  - [ ] <outcome> — change `symbol` in `path`
+  - [ ] <outcome>
+  - [ ] <outcome>
 
 **Files**
-- `path` — what changes
+
+- `path` — `symbol`: what changes
 - `path` — create: cannot live in `existing` because <reason>
 
 **Done when:** <one observable sentence>
@@ -50,15 +65,21 @@ One-line or obvious scope skips the plan. Do not implement.
 
 ## PR 2 — <title>
 
+**This PR:** …
+
 - [ ] Complete
-  - [ ] <outcome> — change `symbol` in `path`
+  - [ ] <outcome>
 
 **Files**
-- `path` — what changes
+
+- `path` — `symbol`: what changes
 
 **Done when:** …
 **Verify:** `<command>`
 ```
+
+**Decisions** is the grill, durable. **This PR** is the briefing for one
+slice. Tasks are outcomes. **Files** are the map.
 
 Nested tasks are progress. Check **Complete** only after done-when and verify
 pass. The next PR starts from an unchecked Complete box, not a checked child.
@@ -83,7 +104,14 @@ separately get separate PRs. More than five nested tasks → split the PR.
 - Ground every PR in the files listed under it. A cited path exists, or it is
   `create`.
 - One approach. No menu, no TBD, no “handle edge cases”, no “similar to PR n”.
-- **Reuse** names the APIs to call. Tasks name the `symbol` in `path` to change.
+- **Decisions** is one bullet per confirmed grill answer: what we will do.
+  Discarded options stay out. **Out of scope** is the confirmed nos. Every
+  confirmed grill answer lands in one of those two lists.
+- **This PR** applies the decisions that bind this slice. An agent who never
+  saw the grill should understand the job from **Decisions** plus this
+  paragraph, the tasks, and the files.
+- **Reuse** names the APIs to call. Tasks name outcomes, not a procedure.
+  **Files** name the `symbol` in `path`.
 - Files are edits. A `create` line names the existing file it cannot join.
   A one-call helper, pass-through, barrel, or mapping-only test belongs at the
   call site.
@@ -91,9 +119,11 @@ separately get separate PRs. More than five nested tasks → split the PR.
 
 ## Self-check
 
-1. Every settled decision has a PR or is named out of scope.
+1. Every confirmed grill answer is in **Decisions** or **Out of scope**,
+   and has a PR or is named out of scope.
 2. Every path exists, or `create` names the existing home it cannot join.
-3. A person can open PR 1, read its tasks, and ship without this conversation.
+3. A person can open PR 1, read **Decisions** plus **This PR**, tasks, and
+   files, and ship without this conversation.
 4. Every PR leaves the repository working without the next PR to justify it.
 
 ## Output

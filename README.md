@@ -105,9 +105,12 @@ In a normal chat, `/plan` saves the result to `.agentflow/<slug>/plan.md`. In
 Native Plan mode, the agent uses its built-in planning flow and native plan
 artifact instead.
 
-The plan breaks the feature into PRs that can be shipped one by one. A PR is the
-smallest complete change that does one useful thing and has a clear way to check
-it, not a fixed number of files or lines.
+The plan keeps the settled grill list, then breaks the feature into PRs that
+can be shipped one by one. A PR is the smallest complete change that does one
+useful thing and has a clear way to check it, not a fixed number of files or
+lines. Each PR briefs why it exists and what it leaves working — enough that a
+fresh chat can implement that slice without the grill conversation — then
+lists the files to change.
 
 Larger work usually starts with lower-level pieces and moves to the code that
 uses them. A full-stack feature might start with behavior-preserving

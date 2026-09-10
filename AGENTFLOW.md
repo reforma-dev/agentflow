@@ -27,7 +27,7 @@ Artifacts: `.agentflow/<feature>/research/`.
 
 Load `/grill`. Settle assumptions, scope, and how the result will be checked.
 
-**Done when:** the user confirmed the final reading and no open decision can
+**Done when:** the user confirmed the settled list and no open decision can
 change how the work will be done.
 
 ## 3. Plan (larger work)
@@ -35,8 +35,8 @@ change how the work will be done.
 Load `/plan` when the confirmed work needs more than one shippable slice.
 Small confirmed work continues at step 4 without a plan file.
 
-**Done when:** `.agentflow/<feature>/plan.md` exists with ordered unchecked PRs,
-or the plan was skipped for a single small slice.
+**Done when:** `.agentflow/<feature>/plan.md` exists with the settled list and
+ordered unchecked PRs, or the plan was skipped for a single small slice.
 
 ## 4. Implement one PR
 
