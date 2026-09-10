@@ -1,0 +1,17 @@
+{
+  "name": "agentflow",
+  "owner": {
+    "name": "Reforma, Inc.",
+    "email": "dev@reforma.ai"
+  },
+  "metadata": {
+    "description": "Opinionated workflow for shipping production-ready changes with coding agents."
+  },
+  "plugins": [
+    {
+      "name": "agentflow",
+      "source": "./",
+      "description": "An opinionated workflow for shipping production-ready changes with coding agents."
+    }
+  ]
+}

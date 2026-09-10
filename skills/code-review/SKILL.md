@@ -10,8 +10,25 @@ license: MIT
 # Code review
 
 Review a finished slice, shrink leftover structure, and fix obvious defects.
-You apply local fixes yourself. Ask the user only when the call needs a
-product or design decision.
+Ask the user only when the call needs a product or design decision.
+
+## Isolation
+
+Run the review in **one subagent**. The parent chat keeps the brief, not the
+review trail.
+
+**Parent.** Brief the subagent, then launch it with this skill's rules:
+
+1. **What changed** — scoped paths, or the git range to diff
+2. **Why** — the slice intent (PR briefing, user request, settled constraints
+   that affect this diff)
+
+When it finishes, relay its return. Do not re-review.
+
+**Subagent.** You were launched to review. Review, fix, and verify. Return
+the two lists. Do not launch another subagent.
+
+If this client cannot launch a subagent, review in this chat.
 
 ## Scope
 
@@ -26,47 +43,10 @@ diff → files from this conversation. Still nothing → `git show --stat --patc
 Stay inside that scope except to match existing patterns. Preserve unrelated
 user changes.
 
-## 1. Triage
+## Fix
 
-Read the scoped diff. You do reuse and smell on every review: reinvented APIs,
-wrappers, pass-throughs, muddy shape.
-
-Then decide whether a second reader is worth the cost. Default is no.
-
-| Extra eyes       | When                                                                                          |
-| ---------------- | --------------------------------------------------------------------------------------------- |
-| none (default)   | You can finish reuse, smell, problems, and the review from this read.                         |
-| one extra reader | The diff touches a **critical surface** you cannot judge from this read alone. Name that gap. |
-
-A critical surface is real trust or a hunt you cannot finish here:
-
-- auth, secrets, injection, user input, or network
-- an existing API that may live far outside this read (another package or app)
-
-Do not launch extra readers because a file is TypeScript, because tests are in
-scope, or because "several files" changed. Extra readers are expensive. Skip
-them unless a trigger above is real.
-
-You still own reuse, wrappers, smell, problems, and the review. Extra eyes
-are a second read of a gap, not a replacement.
-
-## 2. Extra eyes
-
-Skip unless triage named a gap.
-
-Launch **one** extra reader for that gap. They must not edit. Give them the
-scoped paths and what you need judged. Do not tell them how to find the files.
-
-Existing API outside this read → read [reuse.md](reuse.md) and spawn a
-read-only generic reader with that file as the prompt.
-
-Do not launch a second reader unless a second trigger also matches and you
-cannot cover it yourself.
-
-## 3. Fix
-
-You review and you fix. Do not delegate edits. Follow the nearest project
-guide (`AGENTS.md` or equivalent).
+You review and you fix. Follow the nearest project guide (`AGENTS.md` or
+equivalent).
 
 Preserve behavior: only **how**, not **what**. Prefer readable, explicit code
 over fewer lines. Nested ternaries, dense one-liners, and mashed concerns are
@@ -75,9 +55,10 @@ helper is wrong unless it removes more structure than it adds.
 
 **Always check**
 
-1. **Reuse** — an existing helper, component, or API already does the job →
-   call it. No parallel wrapper. Duplicates in scope → keep the better one,
-   retarget imports, delete the rest.
+1. **Reuse** — search the repo for each new helper, component, or copied
+   pattern. Prefer shared libraries and the same package. An existing API
+   already does the job → call it. No parallel wrapper. Duplicates in scope →
+   keep the better one, retarget imports, delete the rest.
 2. **Smell** — pass-throughs, extra HTML/JSX, one-off barrels, muddy shape.
    Inline or delete. Do not wrap a wrapper.
 3. **Orphans** — unused imports, locals, helpers, exports, files, or
@@ -91,17 +72,17 @@ helper is wrong unless it removes more structure than it adds.
    empty, or greenwash. Do not invent tests for a prod-only change. Do not
    reshape prod to please a weak test.
 
-**Fix vs ask**
+**Fix vs leave**
 
-- Local, obvious, behavior-preserving → do it. Do not ask "fix or skip?".
+- Local, obvious, behavior-preserving → do it.
 - Needs a product call, changes the contract, or is too large to do safely →
-  do not edit it. Explain the problem and how to fix it, then wait.
-- The whole approach is wrong → explain the replacement you would ship, then
-  wait. Do not nibble.
+  leave it on the decision list.
+- The whole approach is wrong → explain the replacement you would ship. Do not
+  nibble.
 
 Tie-break: existing helper > inline > new helper. No edits outside scope.
 
-## 4. Verify
+## Verify
 
 No pass / done / clean claim without a command you ran in **this** turn.
 Identify the command → run it full → read exit and failures → then claim.
@@ -113,10 +94,14 @@ A bug you fixed with no covering test → add a regression test or list
 
 ## Output
 
-This is the whole reply. Ordinary sentences, for the person who asked.
+This is the whole return. Ordinary sentences.
 
 ```markdown
-<What you actually changed, in one short paragraph. Omit this if you changed nothing.>
+### Fixed
+
+- <what you changed and why, one line each>
+
+### Needs a decision
 
 ### <Problem>
 
@@ -125,15 +110,15 @@ This is the whole reply. Ordinary sentences, for the person who asked.
 <How to fix it. One obvious change → that change. A call they have to make → the real options and which you'd pick.>
 ```
 
-The heading is the problem, not a category. Skip leftover headings when nothing
-is left unfixed. Do not invent problems.
+Omit **Fixed** when you changed nothing. Omit **Needs a decision** when
+nothing is left unfixed. The heading is the problem, not a category. Do not
+invent problems.
 
-A check that failed → say which command and what failed. Passed checks stay out
-of the reply.
+A check that failed → say which command and what failed. Passed checks stay
+out of the reply.
 
 ## Done
 
 The scoped change has no leftover production structure you could remove
-locally, obvious defects are fixed, extra eyes ran only for a matching
-trigger, verification ran this turn, and every unfixed problem is in front of
-the user in plain language with how to fix it.
+locally, obvious defects are fixed, verification ran this turn, and every
+unfixed problem is on the decision list with how to fix it.

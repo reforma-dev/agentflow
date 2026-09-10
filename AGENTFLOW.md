@@ -16,7 +16,7 @@ Document when the work should become a project page.
 ## 1. Research (optional)
 
 Explore the area before proposing the change. Load `/research` when findings
-must survive this chat.
+must survive this chat. The investigation runs in a subagent.
 
 **Done when:** the agent can name what it will change, or the step was skipped
 because that is already known.
@@ -49,9 +49,9 @@ project craft skills named in `AGENTS.md`. Load `/tdd` for test-first work.
 
 ## 5. Review
 
-Load `/code-review` on the completed slice. Apply local shrinks and obvious
-fixes. Anything left unfixed is explained in plain language with how to
-fix it (or the real options if the call is the user's).
+Load `/code-review` on the completed slice. The review runs in a subagent
+with what changed and why. Local shrinks and obvious fixes land there.
+Anything left unfixed is a decision the reviewer could not make.
 
 **Done when:** leftover production structure is gone, obvious defects are
 fixed, and every unfixed problem is in front of the user with how to fix it.

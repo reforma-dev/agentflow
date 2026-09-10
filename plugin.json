@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "agentflow",
+  "description": "An opinionated workflow for shipping production-ready changes with coding agents.",
+  "author": {
+    "name": "Reforma, Inc.",
+    "email": "dev@reforma.ai",
+    "url": "https://github.com/reforma-dev/agentflow"
+  },
+  "homepage": "https://github.com/reforma-dev/agentflow",
+  "repository": "https://github.com/reforma-dev/agentflow",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "coding-agents",
+    "cursor",
+    "claude-code",
+    "codex"
+  ]
+}

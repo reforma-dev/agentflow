@@ -15,6 +15,22 @@ repeating the investigation. Research only. Do not plan or implement the change.
 The user can ask for research in a regular prompt. Use this skill when the
 findings should survive context compaction or move to another chat.
 
+## Isolation
+
+Run the investigation in a **subagent**. The parent chat keeps the question,
+not the search trail.
+
+**Parent.** Pick the slug (reuse the existing `.agentflow/<slug>/research/`
+directory when continuing). Launch one subagent with the question, this
+skill's rules, and the output path. When it finishes, read only `index.md`.
+Reply with that path and a short takeaway.
+
+**Subagent.** You were launched to research. Investigate, write the files,
+return the path and a one-paragraph takeaway. Do not launch another subagent.
+
+If this client cannot launch a subagent, write the files in this chat, then
+reply from `index.md` only.
+
 ## Output
 
 Write to:

@@ -10,6 +10,8 @@
   "files": [
     "bin",
     "skills",
+    "plugin.json",
+    ".claude-plugin",
     "AGENTFLOW.md",
     "README.md",
     "LICENSE"

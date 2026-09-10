@@ -1,0 +1,8 @@
+{
+  "name": "agentflow",
+  "description": "An opinionated workflow for shipping production-ready changes with coding agents.",
+  "author": {
+    "name": "Reforma, Inc.",
+    "email": "dev@reforma.ai"
+  }
+}

@@ -1,13 +1,3 @@
-<p align="left">
-  <a href="https://www.npmjs.com/package/@reforma/agentflow"><img src="https://img.shields.io/npm/v/@reforma/agentflow.svg" alt="npm"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/npm/l/@reforma/agentflow.svg" alt="MIT License"></a>
-  <a href="https://www.skills.sh/reforma-dev/agentflow"><img src="https://skills.sh/b/reforma-dev/agentflow" alt="skills.sh"></a>
-</p>
-
-<p align="center">
-  <img src="assets/banner.png" alt="AgentFlow — an opinionated workflow for coding agents" width="100%">
-</p>
-
 ```text
 Research → Grill → Plan → PR → Review → Commit
                           ↑                │
@@ -75,9 +65,10 @@ This step is optional, but highly recommended when the agent has not worked in
 the area before. It lets the agent understand what it will be changing before
 the implementation starts.
 
-Use `/research` when the findings should survive the current chat. It saves the
-research artifacts under `.agentflow/<feature>/research/`, ready to attach after
-context compaction or in a new chat.
+Use `/research` when the findings should survive the current chat. It runs
+the investigation in a subagent and saves the artifacts under
+`.agentflow/<feature>/research/`, ready to attach after context compaction or
+in a new chat.
 
 Even if you skip this step, Grill will fill in any gaps.
 
@@ -139,9 +130,10 @@ pass, then apply any scope changes to later PRs.
 
 ### 🤖 Step 5. Agent review
 
-Run `/code-review` on the completed PR. It checks reuse, leftover structure,
-and obvious defects. Local fixes land without asking. Anything left unfixed
-comes back in plain language: the problem, and how to fix it.
+Run `/code-review` on the completed PR. It runs in a subagent with what
+changed and why. Local fixes land without asking. Anything left unfixed comes
+back as a decision the reviewer could not make: the problem, and how to
+fix it.
 
 ### ✅ Step 6. Your review, then commit
 
@@ -166,6 +158,8 @@ working files.
 Skip this step when no page is needed.
 
 ## 📦 Install
+
+### CLI
 
 ```bash
 npx @reforma/agentflow init
@@ -192,32 +186,41 @@ during initialization. Without AgentFlow, `update` starts the same setup as
 
 Do not edit `AGENTFLOW.md`. `init` and `update` will replace it.
 
-<details>
-<summary>More install options</summary>
-
-Known destination:
+More install options
 
 ```bash
 npx @reforma/agentflow init --global --agent cursor
-```
-
-Automation without prompts:
-
-```bash
 npx @reforma/agentflow init --yes
-```
-
-One skill without the workflow:
-
-```bash
 npx skills add reforma-dev/agentflow --skill grill
 ```
 
-</details>
+### Plugin for Claude/Codex/Cursor
+
+**Claude Code**
+
+```bash
+claude plugin marketplace add reforma-dev/agentflow
+claude plugin install agentflow@agentflow
+```
+
+**Codex**
+
+```bash
+codex plugin marketplace add reforma-dev/agentflow
+codex plugin add agentflow@agentflow
+```
+
+**Cursor**
+
+```bash
+cursor-agent plugin marketplace add https://github.com/reforma-dev/agentflow
+```
+
+Then enable AgentFlow in **Customize**.
 
 ---
 
-## ⚖️ How we compare
+## ⚖️ Compare with spec-driven
 
 OpenSpec and Spec Kit try to cover most of spec-driven development with their
 own commands, templates, and artifacts. AgentFlow does not try to be an
@@ -264,7 +267,5 @@ bun publish --dry-run
 AgentFlow is available under the [MIT License](LICENSE).
 
 ## 👤 Maintainer
-
-<img src="https://github.com/kachurun.png" width="100" height="100" alt="@kachurun's avatar" style="border-radius: 50%;">
 
 Maintained with ❤️ by [@kachurun](https://github.com/kachurun)
