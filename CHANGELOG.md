@@ -1,5 +1,12 @@
 # @reforma/agentflow
 
+## 1.2.3
+
+### Patch Changes
+
+- 5aefd0a: Grill lists discrete options one per line and restates the settled list.
+  The plan keeps that list; each PR includes a briefing an outsider can implement from.
+
 ## 1.2.2
 
 ### Patch Changes
