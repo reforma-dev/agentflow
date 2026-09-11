@@ -5,10 +5,10 @@
   "author": {
     "name": "Reforma, Inc.",
     "email": "dev@reforma.ai",
-    "url": "https://github.com/reforma-dev/agentflow"
+    "url": "https://github.com/reforma-ai/agentflow"
   },
-  "homepage": "https://github.com/reforma-dev/agentflow",
-  "repository": "https://github.com/reforma-dev/agentflow",
+  "homepage": "https://github.com/reforma-ai/agentflow",
+  "repository": "https://github.com/reforma-ai/agentflow",
   "license": "MIT",
   "keywords": [
     "agent-skills",

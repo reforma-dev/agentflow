@@ -12,7 +12,8 @@ export const AGENTFLOW_SKILLS = [
   'tdd',
   'document',
 ];
-export const SKILLS_SOURCE = 'reforma-dev/agentflow';
+
+export const SKILLS_SOURCE = 'reforma-ai/agentflow';
 
 interface SkillsPackage {
   bin: string | Record<string, string>;

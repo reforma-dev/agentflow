@@ -32,10 +32,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reforma-dev/agentflow.git"
+    "url": "git+https://github.com/reforma-ai/agentflow.git"
   },
-  "homepage": "https://github.com/reforma-dev/agentflow#readme",
-  "bugs": "https://github.com/reforma-dev/agentflow/issues",
+  "homepage": "https://github.com/reforma-ai/agentflow#readme",
+  "bugs": "https://github.com/reforma-ai/agentflow/issues",
   "keywords": [
     "agent-skills",
     "coding-agents",

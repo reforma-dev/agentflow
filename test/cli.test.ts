@@ -44,7 +44,7 @@ test('init --yes installs skills then docs without prompting', async () => {
 
     expect(status).toBe(0);
     expect(context.calls).toEqual([
-      ['add', 'reforma-dev/agentflow', '--skill', '*', '--yes'],
+      ['add', 'reforma-ai/agentflow', '--skill', '*', '--yes'],
     ]);
     expect(readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8')).toBe(
       `${GENERATED_MARKER}\n\n# Workflow\n`,
@@ -92,7 +92,7 @@ test('init is idempotent and forwards install options', async () => {
     expect(context.calls).toEqual([
       [
         'add',
-        'reforma-dev/agentflow',
+        'reforma-ai/agentflow',
         '--skill',
         '*',
         '--agent',
@@ -128,7 +128,7 @@ test('init replaces an existing AGENTFLOW.md', async () => {
 
     expect(status).toBe(0);
     expect(context.calls).toEqual([
-      ['add', 'reforma-dev/agentflow', '--skill', '*', '--yes'],
+      ['add', 'reforma-ai/agentflow', '--skill', '*', '--yes'],
     ]);
     expect(readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8')).toBe(
       `${GENERATED_MARKER}\n\n# AgentFlow\n`,
@@ -214,7 +214,7 @@ test('update installs AgentFlow when the project is not initialized', async () =
 
     expect(status).toBe(0);
     expect(context.calls).toEqual([
-      ['add', 'reforma-dev/agentflow', '--skill', '*', '--yes'],
+      ['add', 'reforma-ai/agentflow', '--skill', '*', '--yes'],
     ]);
     expect(readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8')).toBe(
       `${GENERATED_MARKER}\n\n# Workflow\n`,
@@ -236,7 +236,7 @@ test('init always installs all skills before asking about docs', async () => {
       promptDocs: async () => {
         docsPrompted = true;
         expect(context.calls).toEqual([
-          ['add', 'reforma-dev/agentflow', '--skill', '*'],
+          ['add', 'reforma-ai/agentflow', '--skill', '*'],
         ]);
         return false;
       },
@@ -284,7 +284,7 @@ test('accepting docs writes AGENTFLOW.md and AGENTS.md after skills', async () =
 
     expect(status).toBe(0);
     expect(context.calls).toEqual([
-      ['add', 'reforma-dev/agentflow', '--skill', '*'],
+      ['add', 'reforma-ai/agentflow', '--skill', '*'],
     ]);
     expect(readFileSync(join(context.cwd, 'AGENTFLOW.md'), 'utf8')).toBe(
       `${GENERATED_MARKER}\n\n# Workflow\n`,
@@ -375,7 +375,7 @@ test('cancelled docs prompt keeps installed skills', async () => {
 
     expect(status).toBe(0);
     expect(context.calls).toEqual([
-      ['add', 'reforma-dev/agentflow', '--skill', '*'],
+      ['add', 'reforma-ai/agentflow', '--skill', '*'],
     ]);
     expect(
       JSON.parse(

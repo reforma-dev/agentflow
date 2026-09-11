@@ -87,7 +87,7 @@ var AGENTFLOW_SKILLS = [
   "tdd",
   "document"
 ];
-var SKILLS_SOURCE = "reforma-dev/agentflow";
+var SKILLS_SOURCE = "reforma-ai/agentflow";
 var runSkills = (args) => {
   const require2 = createRequire(import.meta.url);
   const packagePath = require2.resolve("skills/package.json");

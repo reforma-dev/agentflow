@@ -191,7 +191,7 @@ More install options
 ```bash
 npx @reforma/agentflow init --global --agent cursor
 npx @reforma/agentflow init --yes
-npx skills add reforma-dev/agentflow --skill grill
+npx skills add reforma-ai/agentflow --skill grill
 ```
 
 ### Plugin for Claude/Codex/Cursor
@@ -199,21 +199,21 @@ npx skills add reforma-dev/agentflow --skill grill
 **Claude Code**
 
 ```bash
-claude plugin marketplace add reforma-dev/agentflow
+claude plugin marketplace add reforma-ai/agentflow
 claude plugin install agentflow@agentflow
 ```
 
 **Codex**
 
 ```bash
-codex plugin marketplace add reforma-dev/agentflow
+codex plugin marketplace add reforma-ai/agentflow
 codex plugin add agentflow@agentflow
 ```
 
 **Cursor**
 
 ```bash
-cursor-agent plugin marketplace add https://github.com/reforma-dev/agentflow
+cursor-agent plugin marketplace add https://github.com/reforma-ai/agentflow
 ```
 
 Then enable AgentFlow in **Customize**.
