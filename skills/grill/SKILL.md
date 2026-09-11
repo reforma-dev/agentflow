@@ -20,7 +20,7 @@ Start by restating the task, the decisions already implied by the request, and
 any assumptions you would otherwise make. If there are no open questions, ask
 the user to confirm this reading.
 
-Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled. Ask the whole frontier in one round: number each question and give your recommended answer. Then wait.
+Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled. Ask the whole frontier in one round as ordinary chat text: number each question and give your recommended answer. Then wait. Do not also invoke a host questionnaire, picker, or any extra tool that re-asks the same questions — hosts differ, and that second channel duplicates the round.
 
 ```
 ❓ **Q1** - **<title>**
@@ -36,8 +36,7 @@ Work the tree in **rounds**. The **frontier** is every decision whose prerequisi
 
 Each option is its own list item: one letter, one approach. Never put two
 letters in the same paragraph, and never inline `(a)` `(b)` `(c)` in the
-question body. A host multiple-choice control is fine when it keeps the same
-letters and one option per choice.
+question body.
 
 A question with no discrete approaches omits the list: body, then ➡️.
 
